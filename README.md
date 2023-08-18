@@ -19,4 +19,4 @@ If you are a developer, you may customize this sample following the steps below:
 
 This sample demonstrates intermediate coding techniques with InstallAware Multi Platform.
 
-For more information on InstallAware Multi Platform, please visit www.installaware.com/iamp.
+For more information on InstallAware Multi Platform, please visit https://www.installaware.com/installaware-multi-platform.htm.
