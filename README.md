@@ -6,7 +6,7 @@ This public repository showcases using the brand-new InstallAware Multi Platform
 If you are not a developer and simply wish to be able to run PC apps (and games) on your Mac, you may download a ready-to-run app built from this sample, notarized by Apple, at the URL below:
 www.installaware.com/iamp/agpt.dmg
 
-This app works even on Intel Macs and does not require that you download the Apple Game Porting Toolkit from your Apple Developer account.
+This app works even on Intel Macs and does not require that you download the Apple Game Porting Toolkit from an Apple Developer account.
 
 However, if you do have an Apple Silicon Mac and an Apple Developer account, this sample will also perform additional setup tasks to accelerate 3D games using Apple's brand-new technology.
 
