@@ -15,7 +15,7 @@ Please note that you may run any Windows app using this sample, and are not limi
 If you are a developer, you may customize this sample following the steps below:
 
 1) Please install **InstallAware Multi Platform** _RC0 Update 5_ or newer from www.installaware.com/iamp/rc0.dmg. If you have previously installed **InstallAware Multi Platform**, just run the built-in update tool to upgrade to this version.
-2) Please double-click the **MPRX project file** in the _Finder_ to open this sample in the **InstallAware Multi Platform IDE**.
+2) Please double-click the **MPRX project file** in the _Finder_ to open this sample in the **InstallAware Multi Platform IDE**. While your IDE may ship with an older version of this sample, always check the online repository for the latest version.
 
 This sample demonstrates intermediate coding techniques using **InstallAware Multi Platform**.
 
