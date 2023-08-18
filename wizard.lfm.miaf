@@ -1,0 +1,6 @@
+﻿IF (Glass.Caption <> TRUE)  THEN  Separator.Visible := True;
+IF (Glass.Caption <> TRUE)  THEN  InstallAware.Visible := True;
+IF (CheckWine.Caption = True)  THEN  EXEPATHEX.Enabled := True;
+IF (Glass.Caption = TRUE)  THEN  Separator.Visible := False;
+IF (Glass.Caption = TRUE)  THEN  InstallAware.Visible := False;
+IF (CheckWine.Caption = FALSE)  THEN  EXEPATHEX.Enabled := False;

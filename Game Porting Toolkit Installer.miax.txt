@@ -1,0 +1,225 @@
+Comment: Game Porting Toolkit Installation Example
+Comment: =============================================
+Comment: This project shows how to handle dialog events and build a highly custom script that doesn't directly install anything
+ 
+Comment: This project uses:
+Comment: ------------------
+Comment: 1. The Browse for File command to select files of particular types
+Comment: 2. The Prompt for Text command to capture custom string input
+Comment: 3. The Convert Path command to obtain fully qualified file paths from relatives
+Comment: 4. The Set Access Control command to set executable permissions on emitted scripts
+Comment: 5. The Find All Files command to locate folders of unknown names on a given path
+Comment: 6. The Label command to define custom execution points
+Comment: 7. The GoTo command to direct program flow to a label
+Comment: 8. The Download File command to obtain files from the Internet at runtime
+Comment: 9. The Copy/Move Local Files command to copy files outside of installation media
+Comment: 10. The pre-defined $PLATFORMFULL$ variable to query platform attributes
+ 
+Comment: Additional general scripting commands are used to run programs, disable dialog controls
+ 
+Comment: See in-code comments for more information.
+ 
+[DEFINE REGION: Query system state and choose installation defaults]
+Comment: Since this setup shall be compiled by IAMP for Intel, Rosetta would never need explicit installation
+if Variable PLATFORMFULL Contains (Ignore Case) arm
+  MessageBox: $TITLE$, Please compile $TITLE$ using the Intel version of InstallAware Multi Platform.$NEWLINE$$NEWLINE$$TITLE$ shall now quit.
+  Terminate Installation
+end
+label: Top
+Comment: (Re)Initialize checkbox and path variables
+Set Variable ROSETTA to FALSE
+Set Variable HOMEBREW to TRUE
+Set Variable WINE to TRUE
+Set Variable CONFIGURE to TRUE
+Set Variable DMGPATH to 
+Set Variable EXEPATH to 
+Set Variable WINEPATH to ~/.Wine
+Convert to Long Path: WINEPATH 
+Comment: Check for Homebrew
+Does File Exist /usr/local/bin/brew (get result into variable BREW)
+if Variable BREW Equals TRUE
+  Set Variable HOMEBREW to FALSE
+end
+Comment: Check for existing ~/.wine instance
+Does Folder Exist $WINEPATH$ (get result into variable HOMEWINE)
+if Variable HOMEWINE Equals TRUE
+  Set Variable WINE to FALSE
+  Set Variable CONFIGURE to FALSE
+end
+[END REGION]
+ 
+[DEFINE REGION: Display menu and handle events]
+label: Menu
+Comment: Shortcut to handle two different kinds of Browse buttons for easy Windows app locators
+Set Variable DOWNLOADPATH to ~/Downloads
+Convert to Long Path: DOWNLOADPATH 
+Set Variable PROGRAMSMASK to PC Programs (*.exe)|*.exe|All Files (*)|*
+Comment: Display menu
+Display Dialog: wizard, wait for dialog to return (modal)
+if Variable WIZARD Equals CANCEL
+  Terminate Installation
+end
+if Variable WIZARD Equals URL
+  Run Program https://developer.apple.com/download/all/ 
+end
+if Variable WIZARD Equals DMGPATH
+  Browse for a(n) open file path into variable AGPT, with caption Please select the Apple Game Porting Toolkit download:, start at default directory $DOWNLOADPATH$
+  Does File Exist $AGPT$ (get result into variable AGPT_EXISTS)
+  if Variable AGPT_EXISTS Equals FALSE
+    if Variable AGPT not Equals 
+      MessageBox: Selected DMG Not Readable, $AGPT$ cannot be read!$NEWLINE$$NEWLINE$Please try again.
+    end
+  else
+    Set Variable DMGPATH to $AGPT$
+  end
+end
+if Variable WIZARD Equals EXEPATHEX
+  Set Variable DOWNLOADPATH to $WINEPATH$/drive_c/
+  Set Variable PROGRAMSMASK to PC Programs and Shortcuts (*.exe;*.lnk)|*.exe;*.lnk|All Files (*)|*
+  Set Variable WIZARD to EXEPATH
+end
+if Variable WIZARD Equals EXEPATH
+  Browse for a(n) open file path into variable EXE, with caption Please select the PC game (installer) to run:, start at default directory $DOWNLOADPATH$
+  Does File Exist $EXE$ (get result into variable EXE_EXISTS)
+  if Variable EXE_EXISTS Equals FALSE
+    if Variable EXE not Equals 
+      MessageBox: Selected EXE Not Readable, $EXE$ cannot be read!$NEWLINE$$NEWLINE$Please try again.$NEWLINE$
+    end
+  else
+    Set Variable EXEPATH to $EXE$
+    Comment: Allow manually adding launch parameters (for Wine workarounds, etc.) by double quoting path explicitly where necessary
+    if Variable EXEPATH Contains  
+      Set Variable EXEPATH to "$EXEPATH$"
+    end
+  end
+end
+Comment: Proceed to main phase!
+if Variable WIZARD not Equals NEXT
+  GoTo Label: Menu
+end
+[END REGION]
+ 
+[DEFINE REGION: Process selected tasks]
+Display Dialog: progress, use as progress dialog (non-modal)
+Comment: Generate some unique file names
+Generate GUID into Variable SUDO_SCRIPT
+Generate GUID into Variable WRAPPER_SCRIPT
+Generate GUID into Variable PREFIX_SCRIPT
+if Variable HOMEBREW Equals TRUE
+  Set Variable PROGRESS to 50
+  Set Variable PROGRESSTEXT to Downloading Homebrew x86_64 Installation Script$NEWLINE$https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+  Download File https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh to $SUPPORTDIR$install.sh, get result into variable SH
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable SH not Equals SUCCESS
+    MessageBox: $TITLE$, Homebrew x86_64 Download Failed!$NEWLINE$$NEWLINE$Please check you are connected to the Internet and try again.
+    GoTo Label: Top
+  end
+  Set Variable SUDO to 
+  Prompt for text into variable SUDO, with caption Checking for `sudo` access
+  if Variable SUDO Equals 
+    MessageBox: $TITLE$, Checking for `sudo` access failed!$NEWLINE$$NEWLINE$Please contact your system administrator for help with your account password, and try again.
+    GoTo Label: Top
+  end
+  Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$.sh from Value #!/bin/bash (at end of file)
+  Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$.sh from Value echo $SUDO$ (at end of file)
+  Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_SCRIPT$.sh" for Other Owner Group 
+  Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value #!/bin/bash (at end of file)
+  Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value SUDO_ASKPASS=$SUPPORTDIR$$SUDO_SCRIPT$.sh /bin/bash '$SUPPORTDIR$install.sh' (at end of file)
+  Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$WRAPPER_SCRIPT$.sh" for Other Owner Group 
+  Set Variable PROGRESSTEXT to Installing Homebrew x86_64
+  Set Variable PROGRESS to 50
+  Run Program /bin/bash "$SUPPORTDIR$$WRAPPER_SCRIPT$.sh" (WAIT, get result into variable HOMEBREW)
+  Delete Files $SUPPORTDIR$/$SUDO_SCRIPT$.sh (when installing)
+  Delete Files $SUPPORTDIR$/$WRAPPER_SCRIPT$.sh (when installing)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable HOMEBREW not Equals 0
+    Does File Exist /usr/local/bin/brew (get result into variable BREW)
+    Comment: Sometimes Homebrew installation returns 1, although it succeeds
+    if Variable BREW Equals FALSE
+      MessageBox: $TITLE$, Homebrew x86_64 Installation Failed!$NEWLINE$$NEWLINE$Please install Homebrew x86_64 manually and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREW$
+      GoTo Label: Top
+    end
+  end
+end
+if Variable WINE Equals TRUE
+  Set Variable PROGRESS to 50
+  Set Variable PROGRESSTEXT to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple
+  Comment: Use triple /// as an escape sequence for //
+  Run Program /usr/local/bin/brew tap apple/apple http:///github.com/apple/homebrew-apple (WAIT, get result into variable TAP)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable TAP not Equals 0
+    MessageBox: $TITLE$, Tapping Apple Homebrew Failed!$NEWLINE$$NEWLINE$Please tap Apple Homebrew manually and try again.$NEWLINE$$NEWLINE$Error code: $TAP$
+    GoTo Label: Top
+  end
+  Set Variable PROGRESS to 100
+  Set Variable PROGRESSTEXT to Downloading and Installing Wine (this will take an extended amount of time)
+  Comment: This may take a while
+  Run Program /usr/local/bin/brew -v install apple/apple/game-porting-toolkit (WAIT, get result into variable GPT)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable GPT not Equals 0
+    MessageBox: $TITLE$, Wine Installation Failed!$NEWLINE$$NEWLINE$Please install Wine manually, and try again.$NEWLINE$$NEWLINE$Error code: $GPT$
+    GoTo Label: Top
+  end
+end
+if Variable CONFIGURE Equals TRUE
+  Set Variable PROGRESSTEXT to Configuring Windows Settings$NEWLINE$/usr/local/opt/game-porting-toolkit/bin/wine64
+  Set Variable PROGRESS to 100
+  Run Program /usr/local/opt/game-porting-toolkit/bin/wine64 winecfg (WAIT, get result into variable WINECFG)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable WINECFG not Equals 0
+    MessageBox: $TITLE$, Windows Configuration Failed!$NEWLINE$$NEWLINE$Please configure Wine manually, and try again.$NEWLINE$$NEWLINE$Error code: $WINECFG$
+    GoTo Label: Top
+  end
+end
+if Variable DMGPATH not Equals 
+  Set Variable PROGRESSTEXT to Mounting Apple Game Porting Toolkit DMG$NEWLINE$$DMGPATH$
+  Set Variable PROGRESS to 50
+  Run Program /usr/bin/hdiutil attach "$DMGPATH$" -mountroot "$SUPPORTDIR$/agpt" (WAIT, get result into variable ATTACH)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable ATTACH not Equals 0
+    MessageBox: $TITLE$, Mounting Disk Image Failed!$NEWLINE$$NEWLINE$Please ensure $DMGPATH$ exists, is not already mounted, and try again.$NEWLINE$$NEWLINE$If it is already mounted, please unmount (eject) it first!$NEWLINE$$NEWLINE$Error code: $ATTACH$
+    GoTo Label: Top
+  end
+  Find All Files in path $SUPPORTDIR$/agpt/*, write result into variable MOUNTPATH
+  Replace " with  in variable MOUNTPATH
+  Copy Local Files $MOUNTPATH$/lib/* to /usr/local/opt/game-porting-toolkit/lib/* (include subfolders)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  Set Variable PROGRESSTEXT to Unmounting Apple Game Porting Toolkit DMG$NEWLINE$$MOUNTPATH$
+  Set Variable PROGRESS to 100
+  Run Program /usr/bin/hdiutil detach "$MOUNTPATH$" (WAIT, get result into variable DETACH)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable DETACH not Equals 0
+    Comment: Non-fatal error
+    MessageBox: $TITLE$, Unmounting Disk Image Failed!$NEWLINE$$NEWLINE$Please unmount "$MOUNTPATH$" manually before trying again.$NEWLINE$$NEWLINE$Error code: $DETACH$$NEWLINE$
+  end
+end
+if Variable EXEPATH not Equals 
+  Set Variable PROGRESSTEXT to Launching PC program$NEWLINE$$EXEPATH$
+  Set Variable PROGRESS to 100
+  Run Program /usr/local/opt/game-porting-toolkit/bin/wine64 $EXEPATH$ (WAIT, get result into variable RUN)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable RUN not Equals 0
+    MessageBox: $TITLE$, Running program $EXEPATH$ failed!$NEWLINE$$NEWLINE$Error code: $RUN$$NEWLINE$$NEWLINE$
+    GoTo Label: Top
+  end
+end
+[END REGION]
+ 

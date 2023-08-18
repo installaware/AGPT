@@ -1,0 +1,10 @@
+IF (TestRemove.Caption <> TRUE)  THEN  CaptionInstall.Visible := True;
+IF (TestRemove.Caption = TRUE)  THEN  CaptionUninstall.Visible := True;
+IF (TestRemove.Caption <> TRUE)  THEN  CaptionUninstall.Visible := False;
+IF (TestRemove.Caption = TRUE)  THEN  CaptionInstall.Visible := False;
+IF (Glass.Caption <> TRUE)  THEN  Separator.Visible := True;
+IF (Glass.Caption <> TRUE)  THEN  InstallAware.Visible := True;
+IF (Glass.Caption = TRUE)  THEN  Install.Visible := True;
+IF (Glass.Caption = TRUE)  THEN  Separator.Visible := False;
+IF (Glass.Caption = TRUE)  THEN  InstallAware.Visible := False;
+IF (Glass.Caption <> TRUE)  THEN  Install.Visible := False;
