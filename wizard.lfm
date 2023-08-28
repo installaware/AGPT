@@ -1178,10 +1178,12 @@ object EXE: TComboBox
     'wineboot'
     'winecfg'
     'explorer'
+    'taskmgr'
     'regedit'
     'notepad'
     'wordpad'
     'iexplore'
+    'uninstaller'
   )
   TabOrder = 6
   Text = '$EXEPATH$'
