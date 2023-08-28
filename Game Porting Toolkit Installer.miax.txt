@@ -1,6 +1,8 @@
 Comment: Game Porting Toolkit Installation Example
-Comment: =============================================
+Comment: =========================================
 Comment: This project shows how to handle dialog events and build a highly custom script that doesn't directly install anything
+ 
+Comment: Please visit https://www.installaware.com/gnu.asp for the latest version of this project online
  
 Comment: This project uses:
 Comment: ------------------
@@ -106,6 +108,58 @@ Generate GUID into Variable SUDO_SCRIPT
 Generate GUID into Variable WRAPPER_SCRIPT
 Generate GUID into Variable PREFIX_SCRIPT
 if Variable HOMEBREW Equals TRUE
+  Set Variable PROGRESS to 0
+  Set Variable SUDO to 
+  Does File Exist /opt/homebrew/bin/brew (get result into variable ARMBREW)
+  if Variable ARMBREW Equals TRUE
+    MessageBox: $TITLE$, Homebrew for Apple Silicon is already installed and must be removed first.$NEWLINE$$NEWLINE$WARNING! This WILL remove all existing Homebrew packages.$NEWLINE$$NEWLINE$Would you like to remove your existing Homebrew for Apple Silicon, together with all of its packages?$NEWLINE$$NEWLINE$$NEWLINE$
+    if Variable REMOVE_ARMBREW Equals YES
+      Set Variable PROGRESS to 17
+      Set Variable PROGRESSTEXT to Downloading Homebrew Apple Silicon Uninstallation Script$NEWLINE$https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh
+      Download File https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh to $SUPPORTDIR$uninstall.sh, get result into variable UNSH
+      if Variable ABORT Equals TRUE
+        Terminate Installation
+      end
+      if Variable UNSH not Equals SUCCESS
+        MessageBox: $TITLE$, Homebrew Apple Silicon Download Failed!$NEWLINE$$NEWLINE$Please check you are connected to the Internet and try again.$NEWLINE$$NEWLINE$$NEWLINE$
+        GoTo Label: Top
+      end
+      Prompt for text into variable SUDO, with caption Checking for `sudo` access
+      if Variable SUDO Equals 
+        MessageBox: $TITLE$, Checking for `sudo` access failed!$NEWLINE$$NEWLINE$Please contact your system administrator for help with your account password, and try again.$NEWLINE$
+        GoTo Label: Top
+      end
+      Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$un.sh from Value #!/bin/bash (at end of file)
+      Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$un.sh from Value echo $SUDO$ (at end of file)
+      Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_SCRIPT$un.sh" for Other Owner Group 
+      Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$un.sh from Value #!/bin/bash (at end of file)
+      Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$un.sh from Value SUDO_ASKPASS="$SUPPORTDIR$$SUDO_SCRIPT$un.sh" /bin/bash '$SUPPORTDIR$uninstall.sh' < '$SUPPORTDIR$y.txt' (at end of file)
+      Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$WRAPPER_SCRIPT$un.sh" for Other Owner Group 
+      Write into Text File $SUPPORTDIR$y.txt from Value y (at end of file)
+      Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$y.txt" for Other Owner Group 
+      Set Variable PROGRESSTEXT to Uninstalling Homebrew Apple Silicon
+      Set Variable PROGRESS to 34
+      Comment: Need to manually switch back to Apple Silicon architecture now
+      Run Program /usr/bin/arch -arm64 /bin/bash "$SUPPORTDIR$$WRAPPER_SCRIPT$un.sh" (WAIT, get result into variable HOMEBREWUN)
+      Delete Files $SUPPORTDIR$/$SUDO_SCRIPT$un.sh (when installing)
+      Delete Files $SUPPORTDIR$/$WRAPPER_SCRIPT$un.sh (when installing)
+      Delete Files $SUPPORTDIR$/y.txt (when installing)
+      Delete Files $SUPPORTDIR$/uninstall.sh (when installing)
+      if Variable ABORT Equals TRUE
+        Terminate Installation
+      end
+      if Variable HOMEBREWUN not Equals 0
+        Does File Exist /opt/homebrew/bin/brew (get result into variable BREWUN)
+        Comment: Sometimes Homebrew uninstallation returns 1, although it succeeds
+        if Variable BREWUN Equals TRUE
+          MessageBox: $TITLE$, Homebrew Apple Silicon Uninstallation Failed!$NEWLINE$$NEWLINE$Please check your password, and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREWUN$$NEWLINE$
+          GoTo Label: Top
+        end
+      end
+    else
+      GoTo Label: Top
+    end
+  end
   Set Variable PROGRESS to 50
   Set Variable PROGRESSTEXT to Downloading Homebrew x86_64 Installation Script$NEWLINE$https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
   Download File https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh to $SUPPORTDIR$install.sh, get result into variable SH
@@ -116,8 +170,9 @@ if Variable HOMEBREW Equals TRUE
     MessageBox: $TITLE$, Homebrew x86_64 Download Failed!$NEWLINE$$NEWLINE$Please check you are connected to the Internet and try again.
     GoTo Label: Top
   end
-  Set Variable SUDO to 
-  Prompt for text into variable SUDO, with caption Checking for `sudo` access
+  if Variable SUDO Equals 
+    Prompt for text into variable SUDO, with caption Checking for `sudo` access
+  end
   if Variable SUDO Equals 
     MessageBox: $TITLE$, Checking for `sudo` access failed!$NEWLINE$$NEWLINE$Please contact your system administrator for help with your account password, and try again.
     GoTo Label: Top
@@ -126,13 +181,14 @@ if Variable HOMEBREW Equals TRUE
   Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$.sh from Value echo $SUDO$ (at end of file)
   Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_SCRIPT$.sh" for Other Owner Group 
   Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value #!/bin/bash (at end of file)
-  Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value SUDO_ASKPASS=$SUPPORTDIR$$SUDO_SCRIPT$.sh /bin/bash '$SUPPORTDIR$install.sh' (at end of file)
+  Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value SUDO_ASKPASS="$SUPPORTDIR$$SUDO_SCRIPT$.sh" /bin/bash '$SUPPORTDIR$install.sh' (at end of file)
   Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$WRAPPER_SCRIPT$.sh" for Other Owner Group 
   Set Variable PROGRESSTEXT to Installing Homebrew x86_64
   Set Variable PROGRESS to 50
   Run Program /bin/bash "$SUPPORTDIR$$WRAPPER_SCRIPT$.sh" (WAIT, get result into variable HOMEBREW)
   Delete Files $SUPPORTDIR$/$SUDO_SCRIPT$.sh (when installing)
   Delete Files $SUPPORTDIR$/$WRAPPER_SCRIPT$.sh (when installing)
+  Delete Files $SUPPORTDIR$/install.sh (when installing)
   if Variable ABORT Equals TRUE
     Terminate Installation
   end
@@ -140,7 +196,7 @@ if Variable HOMEBREW Equals TRUE
     Does File Exist /usr/local/bin/brew (get result into variable BREW)
     Comment: Sometimes Homebrew installation returns 1, although it succeeds
     if Variable BREW Equals FALSE
-      MessageBox: $TITLE$, Homebrew x86_64 Installation Failed!$NEWLINE$$NEWLINE$Please install Homebrew x86_64 manually and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREW$
+      MessageBox: $TITLE$, Homebrew x86_64 Installation Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREW$
       GoTo Label: Top
     end
   end
@@ -154,7 +210,7 @@ if Variable WINE Equals TRUE
     Terminate Installation
   end
   if Variable TAP not Equals 0
-    MessageBox: $TITLE$, Tapping Apple Homebrew Failed!$NEWLINE$$NEWLINE$Please tap Apple Homebrew manually and try again.$NEWLINE$$NEWLINE$Error code: $TAP$
+    MessageBox: $TITLE$, Tapping Apple Homebrew Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, and try again.$NEWLINE$$NEWLINE$Error code: $TAP$
     GoTo Label: Top
   end
   Set Variable PROGRESS to 100
@@ -165,7 +221,7 @@ if Variable WINE Equals TRUE
     Terminate Installation
   end
   if Variable GPT not Equals 0
-    MessageBox: $TITLE$, Wine Installation Failed!$NEWLINE$$NEWLINE$Please install Wine manually, and try again.$NEWLINE$$NEWLINE$Error code: $GPT$
+    MessageBox: $TITLE$, Wine Installation Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $GPT$
     GoTo Label: Top
   end
 end
@@ -177,7 +233,7 @@ if Variable CONFIGURE Equals TRUE
     Terminate Installation
   end
   if Variable WINECFG not Equals 0
-    MessageBox: $TITLE$, Windows Configuration Failed!$NEWLINE$$NEWLINE$Please configure Wine manually, and try again.$NEWLINE$$NEWLINE$Error code: $WINECFG$
+    MessageBox: $TITLE$, Windows Configuration Failed!$NEWLINE$$NEWLINE$Please configure Wine manually, or try again.$NEWLINE$$NEWLINE$Error code: $WINECFG$
     GoTo Label: Top
   end
 end
@@ -194,7 +250,13 @@ if Variable DMGPATH not Equals
   end
   Find All Files in path $SUPPORTDIR$/agpt/*, write result into variable MOUNTPATH
   Replace " with  in variable MOUNTPATH
-  Copy Local Files $MOUNTPATH$/lib/* to /usr/local/opt/game-porting-toolkit/lib/* (include subfolders)
+  Does Folder Exist $MOUNTPATH$/redist (get result into variable AGPT_BETA4)
+  if Variable AGPT_BETA4 Equals TRUE
+    Comment: Beta 4 of Apple Game Porting Toolkit changes the DMG layout
+    Run Program /usr/bin/ditto "$MOUNTPATH$/redist/lib" /usr/local/opt/game-porting-toolkit/lib (WAIT)
+  else
+    Run Program /usr/bin/ditto "$MOUNTPATH$/lib" /usr/local/opt/game-porting-toolkit/lib (WAIT)
+  end
   if Variable ABORT Equals TRUE
     Terminate Installation
   end
@@ -206,7 +268,7 @@ if Variable DMGPATH not Equals
   end
   if Variable DETACH not Equals 0
     Comment: Non-fatal error
-    MessageBox: $TITLE$, Unmounting Disk Image Failed!$NEWLINE$$NEWLINE$Please unmount "$MOUNTPATH$" manually before trying again.$NEWLINE$$NEWLINE$Error code: $DETACH$$NEWLINE$
+    MessageBox: $TITLE$, Unmounting Disk Image Failed!$NEWLINE$$NEWLINE$Please unmount "$MOUNTPATH$" manually.$NEWLINE$$NEWLINE$Error code: $DETACH$
   end
 end
 if Variable EXEPATH not Equals 
@@ -217,7 +279,7 @@ if Variable EXEPATH not Equals
     Terminate Installation
   end
   if Variable RUN not Equals 0
-    MessageBox: $TITLE$, Running program $EXEPATH$ failed!$NEWLINE$$NEWLINE$Error code: $RUN$$NEWLINE$$NEWLINE$
+    MessageBox: $TITLE$, Running program $EXEPATH$ failed!$NEWLINE$$NEWLINE$Error code: $RUN$
     GoTo Label: Top
   end
 end
