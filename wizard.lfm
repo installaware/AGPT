@@ -1,6 +1,6 @@
 object frmDesign: TfrmDesign
   Left = 218
-  Height = 360
+  Height = 400
   Top = 122
   Width = 497
   HelpType = htKeyword
@@ -8,7 +8,7 @@ object frmDesign: TfrmDesign
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = '$TITLE$'
-  ClientHeight = 360
+  ClientHeight = 400
   ClientWidth = 497
   Color = clBtnFace
   DoubleBuffered = True
@@ -18,7 +18,7 @@ object frmDesign: TfrmDesign
   KeyPreview = True
   ParentDoubleBuffered = False
   Position = poDefault
-  LCLVersion = '3.99.0.0'
+  LCLVersion = '2.3.0.0'
 object Image1: TImage
   Left = 0
   Height = 59
@@ -1015,14 +1015,14 @@ end
 object Separator: TBevel
   Left = 68
   Height = 9
-  Top = 314
+  Top = 354
   Width = 430
   Shape = bsTopLine
 end
 object InstallAware: TLabel
   Left = 5
   Height = 13
-  Top = 306
+  Top = 346
   Width = 60
   Caption = 'InstallAware'
   Enabled = False
@@ -1030,7 +1030,7 @@ end
 object Glass: TLabel
   Left = 8
   Height = 13
-  Top = 328
+  Top = 368
   Width = 30
   Caption = 'FALSE'
   Visible = False
@@ -1066,10 +1066,25 @@ object URL: TLabel
   Font.Style = [fsUnderline]
   ParentFont = False
 end
+object URLEX: TLabel
+  Tag = 500
+  Cursor = crHandPoint
+  Left = 32
+  Height = 13
+  Top = 234
+  Width = 412
+  Caption = '&Xcode Command Line Tools DMG: (click to download from Apple Developer. optional)'
+  FocusControl = frmDesign.DMGEx
+  Font.Color = clHotLight
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = [fsUnderline]
+  ParentFont = False
+end
 object Label6: TLabel
   Left = 32
   Height = 13
-  Top = 242
+  Top = 282
   Width = 346
   Caption = 'Windows &game (or software) to launch: (typically a setup file, optional)'
   FocusControl = frmDesign.EXE
@@ -1078,37 +1093,37 @@ object Next: TButton
   Tag = 1
   Left = 325
   Height = 23
-  Top = 325
+  Top = 365
   Width = 75
   Caption = '&Next >'
   Default = True
   DoubleBuffered = True
   ParentDoubleBuffered = False
-  TabOrder = 9
+  TabOrder = 11
 end
 object Back: TButton
   Tag = 2
   Left = 249
   Height = 23
-  Top = 325
+  Top = 365
   Width = 75
   Caption = '< &Back'
   DoubleBuffered = True
   Enabled = False
   ParentDoubleBuffered = False
-  TabOrder = 10
+  TabOrder = 12
 end
 object Cancel: TButton
   Tag = 3
   Left = 412
   Height = 23
-  Top = 325
+  Top = 365
   Width = 75
   Cancel = True
   Caption = 'Cancel'
   DoubleBuffered = True
   ParentDoubleBuffered = False
-  TabOrder = 11
+  TabOrder = 13
 end
 object Homebrew: TCheckBox
   Left = 130
@@ -1148,6 +1163,16 @@ object DMG: TEdit
   TabOrder = 4
   Text = '$DMGPATH$'
 end
+object DMGEx: TEdit
+  Tag = 101
+  Left = 32
+  Height = 22
+  Hint = 'DMGPATHEX'
+  Top = 250
+  Width = 369
+  TabOrder = 6
+  Text = '$DMGPATHEX$'
+end
 object DMGPATH: TButton
   Tag = 5
   Left = 408
@@ -1157,21 +1182,30 @@ object DMGPATH: TButton
   Caption = '&Browse...'
   TabOrder = 5
 end
+object DMGPATHEX: TButton
+  Tag = 5
+  Left = 408
+  Height = 25
+  Top = 248
+  Width = 75
+  Caption = 'Browse&...'
+  TabOrder = 7
+end
 object EXEPATH: TButton
   Tag = 5
   Left = 408
   Height = 25
-  Top = 256
+  Top = 296
   Width = 75
   Caption = 'Br&owse...'
-  TabOrder = 7
+  TabOrder = 9
 end
 object EXE: TComboBox
   Tag = 100
   Left = 32
   Height = 20
   Hint = 'EXEPATH'
-  Top = 258
+  Top = 298
   Width = 369
   ItemHeight = 19
   Items.Strings = (
@@ -1185,7 +1219,7 @@ object EXE: TComboBox
     'iexplore'
     'uninstaller'
   )
-  TabOrder = 6
+  TabOrder = 8
   Text = '$EXEPATH$'
 end
 object Configure: TCheckBox
@@ -1201,15 +1235,15 @@ object EXEPATHEX: TButton
   Tag = 5
   Left = 262
   Height = 25
-  Top = 284
+  Top = 324
   Width = 221
   Caption = 'Browse for &Previously Installed Software...'
-  TabOrder = 8
+  TabOrder = 10
 end
 object CheckWine: TLabel
   Left = 60
   Height = 13
-  Top = 336
+  Top = 376
   Width = 69
   Caption = '$HOMEWINE$'
   Visible = False

@@ -1,6 +1,6 @@
 object frmDesign: TfrmDesign
   Left = 245
-  Height = 360
+  Height = 400
   Top = 136
   Width = 497
   HelpType = htKeyword
@@ -8,7 +8,7 @@ object frmDesign: TfrmDesign
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = '$TITLE$'
-  ClientHeight = 360
+  ClientHeight = 400
   ClientWidth = 497
   Color = clBtnFace
   DoubleBuffered = True
@@ -18,7 +18,7 @@ object frmDesign: TfrmDesign
   KeyPreview = True
   ParentDoubleBuffered = False
   Position = poDefault
-  LCLVersion = '3.99.0.0'
+  LCLVersion = '2.3.0.0'
 object Image1: TImage
   Left = 0
   Height = 59
@@ -1380,7 +1380,7 @@ end
 object Install: TStaticText
   Left = 2
   Height = 25
-  Top = 322
+  Top = 362
   Width = 72
   Caption = 'InstallAware'
   Font.Color = clWindowText
@@ -1392,14 +1392,14 @@ end
 object Separator: TBevel
   Left = 68
   Height = 9
-  Top = 314
+  Top = 354
   Width = 430
   Shape = bsTopLine
 end
 object InstallAware: TLabel
   Left = 5
   Height = 13
-  Top = 306
+  Top = 346
   Width = 60
   Caption = 'InstallAware'
   Enabled = False
@@ -1407,7 +1407,7 @@ end
 object Glass: TLabel
   Left = 176
   Height = 13
-  Top = 336
+  Top = 376
   Width = 43
   Caption = '$GLASS$'
   Visible = False
@@ -1435,7 +1435,7 @@ object Next: TButton
   Tag = 1
   Left = 325
   Height = 23
-  Top = 325
+  Top = 365
   Width = 75
   Caption = '&Next >'
   Default = True
@@ -1446,7 +1446,7 @@ object Back: TButton
   Tag = 2
   Left = 249
   Height = 23
-  Top = 325
+  Top = 365
   Width = 75
   Caption = '< &Back'
   Enabled = False
@@ -1456,7 +1456,7 @@ object Cancel: TButton
   Tag = 3
   Left = 412
   Height = 23
-  Top = 325
+  Top = 365
   Width = 75
   Cancel = True
   Caption = 'Cancel'

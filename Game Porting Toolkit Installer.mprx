@@ -292,6 +292,36 @@ $
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $
 $
 0
@@ -300,15 +330,15 @@ TRUE
 
 
 Game Porting Toolkit Installer
-{12FF900C-47DA-16E6-A32C-F9918314784C}
-{CE8B10CE-B7D6-38CF-AC70-832EBB83A320}
+{1E9338C1-05AB-FFF3-6B43-155779B4896D}
+{488B02B3-0B39-2450-2B17-B63D9A0D142D}
 1
 English
 Game Porting Toolkit Installer
 Game Porting Toolkit Installer Installation
 
 
-{6BBD57CD-3415-F191-5DD6-314DD6B0A83A}
+{2CB025BB-4FB9-BD91-30EA-CB0E837DD75E}
 
 
 
@@ -335,6 +365,7 @@ FALSE
 FALSE
 FALSE
 
+sudo.miax
 $
 FALSE
 
