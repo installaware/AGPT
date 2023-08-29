@@ -1,0 +1,49 @@
+Comment: ****************************************************************************
+Comment: This Include Script runs an app with a sudo password passed in automatically
+Comment: ****************************************************************************
+ 
+Comment: ******************************
+Comment: Pass these variables as input:
+Comment: ******************************
+Comment: $SUDO$: Password, will be prompted for if empty (script assumes variable is already initialized)
+Comment: $SUDO_COMMAND$: Job to execute, including all command line parameters
+Comment: $RUNAS_ARM64$: TRUE to run under ARM64, all other values run under X86_64
+ 
+Comment: ************
+Comment: Return value
+Comment: ************
+Comment: 0 indicates success, other values indicate failure
+ 
+ 
+Comment: Generate fresh file names
+Generate GUID into Variable SUDO_TASK
+Generate GUID into Variable SUDO_ECHO
+Comment: Obtain password if necessary
+if Variable SUDO Equals 
+  Prompt for text into variable SUDO, with caption Checking for `sudo` access
+end
+if Variable SUDO Equals 
+  MessageBox: $TITLE$, Checking for `sudo` access failed!$NEWLINE$$NEWLINE$Please contact your system administrator for help with your account password, and try again.$NEWLINE$
+  Return from Include Script with result -1
+end
+Comment: Use Bash shell to echo sudo password
+Write into Text File $SUPPORTDIR$$SUDO_ECHO$.sh from Value #!/bin/bash (at end of file)
+Comment: Echo sudo value
+Write into Text File $SUPPORTDIR$$SUDO_ECHO$.sh from Value echo $SUDO$ (at end of file)
+Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_ECHO$.sh" for Other Owner Group 
+Comment: Use Bash shell to run actual task
+Write into Text File $SUPPORTDIR$$SUDO_TASK$.sh from Value #!/bin/bash (at end of file)
+Comment: Specify sudo must be read from file echo
+Write into Text File $SUPPORTDIR$$SUDO_TASK$.sh from Value SUDO_ASKPASS="$SUPPORTDIR$$SUDO_ECHO$.sh" $SUDO_COMMAND$ (at end of file)
+Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_TASK$.sh" for Other Owner Group 
+if Variable RUNAS_ARM64 Equals (Ignore Case) TRUE
+  Comment: Use arch to change default architecture
+  Run Program /usr/bin/arch -arm64 /bin/bash "$SUPPORTDIR$$SUDO_TASK$.sh" (WAIT, get result into variable SUDO_RESULT)
+else
+  Comment: Sample meant to be compiled under x86_64 default architecture
+  Run Program /bin/bash "$SUPPORTDIR$$SUDO_TASK$.sh" (WAIT, get result into variable SUDO_RESULT)
+end
+Delete Files $SUPPORTDIR$/$SUDO_ECHO$.sh (when installing)
+Delete Files $SUPPORTDIR$/$SUDO_TASK$.sh (when installing)
+Return from Include Script with result $SUDO_RESULT$
+ 

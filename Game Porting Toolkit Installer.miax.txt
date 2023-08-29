@@ -14,7 +14,7 @@ Comment: 5. The Find All Files command to locate folders of unknown names on a g
 Comment: 6. The Label command to define custom execution points
 Comment: 7. The GoTo command to direct program flow to a label
 Comment: 8. The Download File command to obtain files from the Internet at runtime
-Comment: 9. The Copy/Move Local Files command to copy files outside of installation media
+Comment: 9. The (Return from) Include Script commands to automate the task of running jobs with sudo
 Comment: 10. The pre-defined $PLATFORMFULL$ variable to query platform attributes
  
 Comment: Additional general scripting commands are used to run programs, disable dialog controls
@@ -27,14 +27,16 @@ if Variable PLATFORMFULL Contains (Ignore Case) arm
   MessageBox: $TITLE$, Please compile $TITLE$ using the Intel version of InstallAware Multi Platform.$NEWLINE$$NEWLINE$$TITLE$ shall now quit.
   Terminate Installation
 end
+Set Variable DMGPATH to 
+Set Variable DMGPATHEX to 
+Set Variable EXEPATH to 
 label: Top
 Comment: (Re)Initialize checkbox and path variables
+Set Variable SUDO to 
 Set Variable ROSETTA to FALSE
 Set Variable HOMEBREW to TRUE
 Set Variable WINE to TRUE
 Set Variable CONFIGURE to TRUE
-Set Variable DMGPATH to 
-Set Variable EXEPATH to 
 Set Variable WINEPATH to ~/.Wine
 Convert to Long Path: WINEPATH 
 Comment: Check for Homebrew
@@ -75,6 +77,17 @@ if Variable WIZARD Equals DMGPATH
     Set Variable DMGPATH to $AGPT$
   end
 end
+if Variable WIZARD Equals DMGPATHEX
+  Browse for a(n) open file path into variable XCODE, with caption Please select the Xcode Command Line Tools download:, start at default directory $DOWNLOADPATH$
+  Does File Exist $XCODE$ (get result into variable XCODE_EXISTS)
+  if Variable XCODE_EXISTS Equals FALSE
+    if Variable XCODE not Equals 
+      MessageBox: Selected DMG Not Readable, $XCODE$ cannot be read!$NEWLINE$$NEWLINE$Please try again.
+    end
+  else
+    Set Variable DMGPATHEX to $XCODE$
+  end
+end
 if Variable WIZARD Equals EXEPATHEX
   Set Variable DOWNLOADPATH to $WINEPATH$/drive_c/
   Set Variable PROGRAMSMASK to PC Programs and Shortcuts (*.exe;*.lnk)|*.exe;*.lnk|All Files (*)|*
@@ -85,7 +98,7 @@ if Variable WIZARD Equals EXEPATH
   Does File Exist $EXE$ (get result into variable EXE_EXISTS)
   if Variable EXE_EXISTS Equals FALSE
     if Variable EXE not Equals 
-      MessageBox: Selected EXE Not Readable, $EXE$ cannot be read!$NEWLINE$$NEWLINE$Please try again.$NEWLINE$
+      MessageBox: Selected EXE Not Readable, $EXE$ cannot be read!$NEWLINE$$NEWLINE$Please try again.
     end
   else
     Set Variable EXEPATH to $EXE$
@@ -103,16 +116,49 @@ end
  
 [DEFINE REGION: Process selected tasks]
 Display Dialog: progress, use as progress dialog (non-modal)
-Comment: Generate some unique file names
-Generate GUID into Variable SUDO_SCRIPT
-Generate GUID into Variable WRAPPER_SCRIPT
-Generate GUID into Variable PREFIX_SCRIPT
+if Variable DMGPATHEX not Equals 
+  Set Variable PROGRESSTEXT to Mounting Xcode Command Line Tools DMG$NEWLINE$$DMGPATHEX$
+  Set Variable PROGRESS to 33
+  Run Program /usr/bin/hdiutil attach "$DMGPATHEX$" -mountroot "$SUPPORTDIR$/xcode" (WAIT, get result into variable ATTACH)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable ATTACH not Equals 0
+    MessageBox: $TITLE$, Mounting Disk Image Failed!$NEWLINE$$NEWLINE$Please ensure $DMGPATHEX$ exists, is not already mounted, and try again.$NEWLINE$$NEWLINE$If it is already mounted, please unmount (eject) it first!$NEWLINE$$NEWLINE$Error code: $ATTACH$
+    GoTo Label: Top
+  end
+  Find All Files in path $SUPPORTDIR$/xcode/*, write result into variable MOUNTPATH
+  Replace " with  in variable MOUNTPATH
+  Set Variable RUNAS_ARM64 to FALSE
+  Set Variable SUDO_COMMAND to /usr/bin/sudo -A /usr/sbin/installer -pkg "$MOUNTPATH$/Command Line Tools.pkg" -target /
+  Set Variable PROGRESSTEXT to Installing Xcode Command Line Tools
+  Set Variable PROGRESS to 67
+  Include Script: sudo (get result into variable XCODE_RESULT)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable XCODE_RESULT not Equals 0
+    MessageBox: $TITLE$, Installing Xcode Command Line Tools Failed!$NEWLINE$$NEWLINE$Please check your free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $XCODE_RESULT$
+    GoTo Label: Top
+  else
+    Comment: Don't ask for this again
+    Set Variable DMGPATHEX to 
+  end
+  Set Variable PROGRESSTEXT to Unmounting Xcode Command Line Tools DMG$NEWLINE$$MOUNTPATH$
+  Set Variable PROGRESS to 100
+  Run Program /usr/bin/hdiutil detach "$MOUNTPATH$" (WAIT, get result into variable DETACH)
+  if Variable ABORT Equals TRUE
+    Terminate Installation
+  end
+  if Variable DETACH not Equals 0
+    MessageBox: $TITLE$, Unmounting Disk Image Failed!$NEWLINE$$NEWLINE$Please unmount "$MOUNTPATH$" manually.$NEWLINE$$NEWLINE$Error code: $DETACH$
+  end
+end
 if Variable HOMEBREW Equals TRUE
   Set Variable PROGRESS to 0
-  Set Variable SUDO to 
   Does File Exist /opt/homebrew/bin/brew (get result into variable ARMBREW)
   if Variable ARMBREW Equals TRUE
-    MessageBox: $TITLE$, Homebrew for Apple Silicon is already installed and must be removed first.$NEWLINE$$NEWLINE$WARNING! This WILL remove all existing Homebrew packages.$NEWLINE$$NEWLINE$Would you like to remove your existing Homebrew for Apple Silicon, together with all of its packages?$NEWLINE$$NEWLINE$$NEWLINE$
+    MessageBox: $TITLE$, Homebrew for Apple Silicon is already installed and must be removed first.$NEWLINE$$NEWLINE$WARNING! This WILL remove all existing Homebrew packages.$NEWLINE$$NEWLINE$Would you like to remove your existing Homebrew for Apple Silicon, together with all of its packages?
     if Variable REMOVE_ARMBREW Equals YES
       Set Variable PROGRESS to 17
       Set Variable PROGRESSTEXT to Downloading Homebrew Apple Silicon Uninstallation Script$NEWLINE$https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh
@@ -121,28 +167,18 @@ if Variable HOMEBREW Equals TRUE
         Terminate Installation
       end
       if Variable UNSH not Equals SUCCESS
-        MessageBox: $TITLE$, Homebrew Apple Silicon Download Failed!$NEWLINE$$NEWLINE$Please check you are connected to the Internet and try again.$NEWLINE$$NEWLINE$$NEWLINE$
+        MessageBox: $TITLE$, Homebrew Apple Silicon Download Failed!$NEWLINE$$NEWLINE$Please check you are connected to the Internet and try again.
         GoTo Label: Top
       end
-      Prompt for text into variable SUDO, with caption Checking for `sudo` access
-      if Variable SUDO Equals 
-        MessageBox: $TITLE$, Checking for `sudo` access failed!$NEWLINE$$NEWLINE$Please contact your system administrator for help with your account password, and try again.$NEWLINE$
-        GoTo Label: Top
-      end
-      Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$un.sh from Value #!/bin/bash (at end of file)
-      Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$un.sh from Value echo $SUDO$ (at end of file)
-      Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_SCRIPT$un.sh" for Other Owner Group 
-      Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$un.sh from Value #!/bin/bash (at end of file)
-      Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$un.sh from Value SUDO_ASKPASS="$SUPPORTDIR$$SUDO_SCRIPT$un.sh" /bin/bash '$SUPPORTDIR$uninstall.sh' < '$SUPPORTDIR$y.txt' (at end of file)
-      Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$WRAPPER_SCRIPT$un.sh" for Other Owner Group 
+      Comment: Approve package deletion
       Write into Text File $SUPPORTDIR$y.txt from Value y (at end of file)
       Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$y.txt" for Other Owner Group 
       Set Variable PROGRESSTEXT to Uninstalling Homebrew Apple Silicon
       Set Variable PROGRESS to 34
       Comment: Need to manually switch back to Apple Silicon architecture now
-      Run Program /usr/bin/arch -arm64 /bin/bash "$SUPPORTDIR$$WRAPPER_SCRIPT$un.sh" (WAIT, get result into variable HOMEBREWUN)
-      Delete Files $SUPPORTDIR$/$SUDO_SCRIPT$un.sh (when installing)
-      Delete Files $SUPPORTDIR$/$WRAPPER_SCRIPT$un.sh (when installing)
+      Set Variable RUNAS_ARM64 to TRUE
+      Set Variable SUDO_COMMAND to /bin/bash '$SUPPORTDIR$uninstall.sh' < '$SUPPORTDIR$y.txt'
+      Include Script: sudo (get result into variable HOMEBREWUN)
       Delete Files $SUPPORTDIR$/y.txt (when installing)
       Delete Files $SUPPORTDIR$/uninstall.sh (when installing)
       if Variable ABORT Equals TRUE
@@ -152,7 +188,7 @@ if Variable HOMEBREW Equals TRUE
         Does File Exist /opt/homebrew/bin/brew (get result into variable BREWUN)
         Comment: Sometimes Homebrew uninstallation returns 1, although it succeeds
         if Variable BREWUN Equals TRUE
-          MessageBox: $TITLE$, Homebrew Apple Silicon Uninstallation Failed!$NEWLINE$$NEWLINE$Please check your password, and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREWUN$$NEWLINE$
+          MessageBox: $TITLE$, Homebrew Apple Silicon Uninstallation Failed!$NEWLINE$$NEWLINE$Please check your password, and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREWUN$
           GoTo Label: Top
         end
       end
@@ -170,24 +206,11 @@ if Variable HOMEBREW Equals TRUE
     MessageBox: $TITLE$, Homebrew x86_64 Download Failed!$NEWLINE$$NEWLINE$Please check you are connected to the Internet and try again.
     GoTo Label: Top
   end
-  if Variable SUDO Equals 
-    Prompt for text into variable SUDO, with caption Checking for `sudo` access
-  end
-  if Variable SUDO Equals 
-    MessageBox: $TITLE$, Checking for `sudo` access failed!$NEWLINE$$NEWLINE$Please contact your system administrator for help with your account password, and try again.
-    GoTo Label: Top
-  end
-  Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$.sh from Value #!/bin/bash (at end of file)
-  Write into Text File $SUPPORTDIR$$SUDO_SCRIPT$.sh from Value echo $SUDO$ (at end of file)
-  Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$SUDO_SCRIPT$.sh" for Other Owner Group 
-  Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value #!/bin/bash (at end of file)
-  Write into Text File $SUPPORTDIR$$WRAPPER_SCRIPT$.sh from Value SUDO_ASKPASS="$SUPPORTDIR$$SUDO_SCRIPT$.sh" /bin/bash '$SUPPORTDIR$install.sh' (at end of file)
-  Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$WRAPPER_SCRIPT$.sh" for Other Owner Group 
   Set Variable PROGRESSTEXT to Installing Homebrew x86_64
   Set Variable PROGRESS to 50
-  Run Program /bin/bash "$SUPPORTDIR$$WRAPPER_SCRIPT$.sh" (WAIT, get result into variable HOMEBREW)
-  Delete Files $SUPPORTDIR$/$SUDO_SCRIPT$.sh (when installing)
-  Delete Files $SUPPORTDIR$/$WRAPPER_SCRIPT$.sh (when installing)
+  Set Variable RUNAS_ARM64 to FALSE
+  Set Variable SUDO_COMMAND to /bin/bash '$SUPPORTDIR$install.sh'
+  Include Script: sudo (get result into variable HOMEBREW)
   Delete Files $SUPPORTDIR$/install.sh (when installing)
   if Variable ABORT Equals TRUE
     Terminate Installation
@@ -239,7 +262,7 @@ if Variable CONFIGURE Equals TRUE
 end
 if Variable DMGPATH not Equals 
   Set Variable PROGRESSTEXT to Mounting Apple Game Porting Toolkit DMG$NEWLINE$$DMGPATH$
-  Set Variable PROGRESS to 50
+  Set Variable PROGRESS to 33
   Run Program /usr/bin/hdiutil attach "$DMGPATH$" -mountroot "$SUPPORTDIR$/agpt" (WAIT, get result into variable ATTACH)
   if Variable ABORT Equals TRUE
     Terminate Installation
@@ -251,14 +274,22 @@ if Variable DMGPATH not Equals
   Find All Files in path $SUPPORTDIR$/agpt/*, write result into variable MOUNTPATH
   Replace " with  in variable MOUNTPATH
   Does Folder Exist $MOUNTPATH$/redist (get result into variable AGPT_BETA4)
+  Set Variable PROGRESSTEXT to Copying Apple Game Porting Toolkit Files
+  Set Variable PROGRESS to 67
   if Variable AGPT_BETA4 Equals TRUE
     Comment: Beta 4 of Apple Game Porting Toolkit changes the DMG layout
-    Run Program /usr/bin/ditto "$MOUNTPATH$/redist/lib" /usr/local/opt/game-porting-toolkit/lib (WAIT)
+    Run Program /usr/bin/ditto "$MOUNTPATH$/redist/lib" /usr/local/opt/game-porting-toolkit/lib (WAIT, get result into variable DITTO)
   else
-    Run Program /usr/bin/ditto "$MOUNTPATH$/lib" /usr/local/opt/game-porting-toolkit/lib (WAIT)
+    Run Program /usr/bin/ditto "$MOUNTPATH$/lib" /usr/local/opt/game-porting-toolkit/lib (WAIT, get result into variable DITTO)
   end
   if Variable ABORT Equals TRUE
     Terminate Installation
+  end
+  if Variable DITTO not Equals 0
+    MessageBox: $TITLE$, Apple Game Porting Toolkit Copy Failed!$NEWLINE$$NEWLINE$DirectX 12 games may not be accelerated.$NEWLINE$$NEWLINE$You may try again later.$NEWLINE$$NEWLINE$Error code: $DITTO$
+  else
+    Comment: Don't prompt for this again
+    Set Variable DMGPATH to 
   end
   Set Variable PROGRESSTEXT to Unmounting Apple Game Porting Toolkit DMG$NEWLINE$$MOUNTPATH$
   Set Variable PROGRESS to 100
@@ -267,7 +298,6 @@ if Variable DMGPATH not Equals
     Terminate Installation
   end
   if Variable DETACH not Equals 0
-    Comment: Non-fatal error
     MessageBox: $TITLE$, Unmounting Disk Image Failed!$NEWLINE$$NEWLINE$Please unmount "$MOUNTPATH$" manually.$NEWLINE$$NEWLINE$Error code: $DETACH$
   end
 end
