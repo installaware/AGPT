@@ -4,7 +4,7 @@ Apple Game Porting Toolkit Installer
 This public repository showcases using the brand-new **InstallAware Multi Platform** to completely automate the installation of Apple's new Game Porting Toolkit, making the process as simple as point-and-click - even for non-developers!
 
 **If you are not a developer and are looking for a free way to run PC apps (and games) on your Mac, you may download a ready-to-run app built from this sample, notarized by Apple, at the URL below:
-www.installaware.com/iamp/agpt.dmg** (12,7 MB)
+www.installaware.com/iamp/agpt.dmg** (14,9 MB)
 
 ![agpt](https://github.com/installaware/AGPT/assets/24454000/8f5987ee-dc27-447b-b1cc-eef2fa3faec7)
 
