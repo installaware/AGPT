@@ -1,0 +1,45 @@
+Comment: ******************************************************************************
+Comment: This Include Script runs an app with logging and displays the log upon failure
+Comment: ******************************************************************************
+ 
+Comment: ******************************
+Comment: Pass these variables as input:
+Comment: ******************************
+Comment: $LOGGED_COMMAND$: Job to execute, including all command line parameters
+Comment: $COMMAND_DESCRIPTION$: Human readable description of job, $NEWLINE$ delimited detail line
+ 
+Comment: ************
+Comment: Return value
+Comment: ************
+Comment: 0 indicates success, other values indicate failure
+Comment: If user selects Cancel upon failure, this script shall not return
+ 
+ 
+Comment: Generate fresh file names
+Generate GUID into Variable OUTPUT_LOG
+Generate GUID into Variable LOGGED_TASK
+Comment: Upate textual progress variable
+Set Variable PROGRESSTEXT to $COMMAND_DESCRIPTION$
+Parse String $COMMAND_DESCRIPTION$ into Variables COMMAND_DESCRIPTION and  (Split at first occurrence of pattern)
+Comment: Use Bash shell to run actual task
+Write into Text File $SUPPORTDIR$$LOGGED_TASK$.sh from Value #!/bin/bash (at end of file)
+Comment: Redirect both stdout and stderr to temporary log file
+Write into Text File $SUPPORTDIR$$LOGGED_TASK$.sh from Value $LOGGED_COMMAND$ > "$SUPPORTDIR$$OUTPUT_LOG$.txt" 2>&1 (at end of file)
+Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$LOGGED_TASK$.sh" for Other Owner Group 
+Comment: Run task
+Run Program /bin/bash "$SUPPORTDIR$$LOGGED_TASK$.sh" (WAIT, get result into variable LOGGED_RESULT)
+if Variable ABORT Equals TRUE
+  Comment: Files placed in $SUPPORTDIR$ are automatically removed when setup quits
+  Terminate Installation
+end
+if Variable LOGGED_RESULT not Equals 0
+  MessageBox: $TITLE$, $COMMAND_DESCRIPTION$ Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $LOGGED_RESULT$$NEWLINE$$NEWLINE$Would you like to review the log file?
+  if Variable REVIEW Equals YES
+    Run Program $SUPPORTDIR$$OUTPUT_LOG$.txt 
+  end
+  if Variable REVIEW Equals CANCEL
+    Terminate Installation
+  end
+end
+Return from Include Script with result $LOGGED_RESULT$
+ 

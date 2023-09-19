@@ -15,7 +15,8 @@ Comment: 6. The Label command to define custom execution points
 Comment: 7. The GoTo command to direct program flow to a label
 Comment: 8. The Download File command to obtain files from the Internet at runtime
 Comment: 9. The (Return from) Include Script commands to automate the task of running jobs with sudo
-Comment: 10. The pre-defined $PLATFORMFULL$ variable to query platform attributes
+Comment: 10. The Write to Text File command paired with the Run Program command to create shell scripts with logged output
+Comment: 11. The pre-defined $PLATFORMFULL$ variable to query platform attributes
  
 Comment: Additional general scripting commands are used to run programs, disable dialog controls
  
@@ -64,7 +65,10 @@ if Variable WIZARD Equals CANCEL
   Terminate Installation
 end
 if Variable WIZARD Equals URL
-  Run Program https://developer.apple.com/download/all/ 
+  Run Program https://developer.apple.com/download/all/?q=game%20porting%20toolkit 
+end
+if Variable WIZARD Equals URLEX
+  Run Program https://developer.apple.com/download/all/?q=command line tools 
 end
 if Variable WIZARD Equals DMGPATH
   Browse for a(n) open file path into variable AGPT, with caption Please select the Apple Game Porting Toolkit download:, start at default directory $DOWNLOADPATH$
@@ -226,25 +230,17 @@ if Variable HOMEBREW Equals TRUE
 end
 if Variable WINE Equals TRUE
   Set Variable PROGRESS to 50
-  Set Variable PROGRESSTEXT to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple
-  Comment: Use triple /// as an escape sequence for //
-  Run Program /usr/local/bin/brew tap apple/apple http:///github.com/apple/homebrew-apple (WAIT, get result into variable TAP)
-  if Variable ABORT Equals TRUE
-    Terminate Installation
-  end
+  Set Variable COMMAND_DESCRIPTION to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple
+  Set Variable LOGGED_COMMAND to /usr/local/bin/brew tap apple/apple http://github.com/apple/homebrew-apple
+  Include Script: logging (get result into variable TAP)
   if Variable TAP not Equals 0
-    MessageBox: $TITLE$, Tapping Apple Homebrew Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, and try again.$NEWLINE$$NEWLINE$Error code: $TAP$
     GoTo Label: Top
   end
   Set Variable PROGRESS to 100
-  Set Variable PROGRESSTEXT to Downloading and Installing Wine (this will take an extended amount of time)
-  Comment: This may take a while
-  Run Program /usr/local/bin/brew -v install apple/apple/game-porting-toolkit (WAIT, get result into variable GPT)
-  if Variable ABORT Equals TRUE
-    Terminate Installation
-  end
+  Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine$NEWLINE$(this will take an extended amount of time)
+  Set Variable LOGGED_COMMAND to /usr/local/bin/brew -v install apple/apple/game-porting-toolkit
+  Include Script: logging (get result into variable GPT)
   if Variable GPT not Equals 0
-    MessageBox: $TITLE$, Wine Installation Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $GPT$
     GoTo Label: Top
   end
 end
