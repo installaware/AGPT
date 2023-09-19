@@ -18,7 +18,7 @@ object frmDesign: TfrmDesign
   KeyPreview = True
   ParentDoubleBuffered = False
   Position = poDefault
-  LCLVersion = '2.3.0.0'
+  LCLVersion = '3.99.0.0'
 object Image1: TImage
   Left = 0
   Height = 59
@@ -1057,8 +1057,8 @@ object URL: TLabel
   Left = 32
   Height = 13
   Top = 194
-  Width = 410
-  Caption = '&Apple Game Porting Toolkit DMG: (click to download from Apple Developer. optional)'
+  Width = 370
+  Caption = 'Apple Game Porting Toolkit DMG location: (download from Apple Developer)'
   FocusControl = frmDesign.DMG
   Font.Color = clHotLight
   Font.Height = -11
@@ -1067,13 +1067,13 @@ object URL: TLabel
   ParentFont = False
 end
 object URLEX: TLabel
-  Tag = 500
+  Tag = 5
   Cursor = crHandPoint
   Left = 32
   Height = 13
   Top = 234
-  Width = 412
-  Caption = '&Xcode Command Line Tools DMG: (click to download from Apple Developer. optional)'
+  Width = 372
+  Caption = '&Xcode Command Line Tools DMG location: (download from Apple Developer)'
   FocusControl = frmDesign.DMGEx
   Font.Color = clHotLight
   Font.Height = -11
