@@ -6,7 +6,7 @@ This public repository showcases using the brand-new **InstallAware Multi Platfo
 **If you are not a developer and are looking for a free way to run PC apps (and games) on your Mac, you may download a ready-to-run app built from this sample, notarized by Apple, at the URL below:
 www.installaware.com/iamp/agpt.dmg** (14.8 MB)
 
-![agpt](https://github.com/installaware/AGPT/assets/24454000/8f5987ee-dc27-447b-b1cc-eef2fa3faec7)
+<img width="609" alt="Screenshot 2023-09-24 at 02 06 19" src="https://github.com/installaware/AGPT/assets/24454000/780e4c57-d24f-43a9-885f-a2a6fe5cb5b7">
 
 _This app works even on Intel Macs and does not require that you download the Apple Game Porting Toolkit from an Apple Developer account._
 
