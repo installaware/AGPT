@@ -231,7 +231,7 @@ end
 if Variable WINE Equals TRUE
   Set Variable PROGRESS to 50
   Set Variable COMMAND_DESCRIPTION to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple
-  Set Variable LOGGED_COMMAND to /usr/local/bin/brew tap apple/apple http://github.com/apple/homebrew-apple
+  Set Variable LOGGED_COMMAND to /usr/local/bin/brew tap apple/apple http://github.com/apple/homebrew-apple --custom-remote
   Include Script: logging (get result into variable TAP)
   if Variable TAP not Equals 0
     GoTo Label: Top

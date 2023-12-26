@@ -1065,7 +1065,7 @@ DMGPATHEX$MYAH$MYAH$FALSE
 
 {E3C7C0FA-6D77-1B34-CB54-81D7856F1730}
 LOGGED_COMMAND$MYAH$MYAH$FALSE
-/usr/local/bin/brew tap apple/apple http://github.com/apple/homebrew-apple
+/usr/local/bin/brew tap apple/apple http://github.com/apple/homebrew-apple --custom-remote
 {474ABB09-D7FC-8B0B-A055-8834E5FA0AB5}
 COMMAND_DESCRIPTION$MYAH$MYAH$FALSE
 Downloading and Installing Wine$NEWLINE$(this will take an extended amount of time)
