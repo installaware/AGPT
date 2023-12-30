@@ -730,7 +730,7 @@ FALSE
 /usr/bin/killall
 FALSE
 wineserver
-FALSE
+TRUE
 
 {059F572F-FC3A-66C8-EC43-5B9DB14A8590}
 
