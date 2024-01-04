@@ -313,7 +313,7 @@ if Variable EXEPATH not Equals
   end
   Set Variable COMMAND to /usr/local/opt/game-porting-toolkit/bin/wine64 $EXEPATH$
   Comment: Fix for this potential error: "Server is running with WINEESYNC but this process is not, please enable WINEESYNC or restart wineserver."
-  Run Program /usr/bin/killall wineserver
+  Run Program /usr/bin/killall wineserver (WAIT)
   Include Script: env (get result into variable RUN)
   if Variable ABORT Equals TRUE
     Terminate Installation
