@@ -997,8 +997,9 @@ object Label3: TLabel
   Top = 24
   Width = 388
   AutoSize = False
-  Caption = 'This wizard helps you install and launch your favorite Windows games (and software) on your Mac. macOS Sonoma and Apple Silicon are optional.'
+  Caption = 'Install and run your Windows software and games on your Mac. macOS Sonoma and Apple Silicon are optional.'
   WordWrap = True
+  Font.Color = 6250335  
 end
 object Label1: TLabel
   Left = 24
@@ -1011,6 +1012,7 @@ object Label1: TLabel
   Font.Name = 'Tahoma'
   Font.Style = [fsBold]
   ParentFont = False
+  Font.Color = 6250335
 end
 object Separator: TBevel
   Left = 68

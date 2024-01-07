@@ -1357,18 +1357,20 @@ object Label5: TLabel
   Top = 24
   Width = 276
   Caption = 'The program features you selected are being configured.'
+  Font.Color = 6250335
 end
 object Label1: TLabel
   Left = 24
   Height = 13
   Top = 8
   Width = 102
-  Caption = 'Installing $TITLE$'
+  Caption = 'AGPT Installer and Launcher'
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = [fsBold]
   ParentFont = False
+  Font.Color = 6250335
 end
 object Label4: TLabel
   Left = 96
