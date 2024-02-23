@@ -16,7 +16,7 @@ Please note that you may run any Windows app using this sample, and are not limi
 
 If you are a developer, you may customize this sample following the steps below:
 
-1) Please install **InstallAware Multi Platform 1.0** from www.installaware.com/iamp/rtm.dmg. If you have previously installed **InstallAware Multi Platform**, just run the built-in update tool to upgrade to this version.
+1) Please install **InstallAware Multi Platform 1.2** from www.installaware.com/iamp/rtm.dmg. If you have previously installed **InstallAware Multi Platform**, just run the built-in update tool to upgrade to this version.
 2) Please double-click the **MPRX project file** in the _Finder_ to open this sample in the **InstallAware Multi Platform** IDE. While your IDE may ship with an older version of this sample, always check the online repository for the latest version.
 3) For human readable copies of the installation scripts, please take a look at https://github.com/installaware/AGPT/blob/main/Game%20Porting%20Toolkit%20Installer.miax.txt, https://github.com/installaware/AGPT/blob/main/sudo.miax.txt, https://github.com/installaware/AGPT/blob/main/logging.miax.txt, and https://github.com/installaware/AGPT/blob/main/env.miax.txt. Your IDE renders these scripts with syntax highlighting, code folding, undo/redo, etc.
 
