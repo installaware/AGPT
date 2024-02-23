@@ -15,8 +15,9 @@ Comment: 6. The Label command to define custom execution points
 Comment: 7. The GoTo command to direct program flow to a label
 Comment: 8. The Download File command to obtain files from the Internet at runtime
 Comment: 9. The (Return from) Include Script commands to automate the task of running jobs with sudo, logging, and environment variables
-Comment: 10. The Write to Text File command paired with the Run Program command to create shell scripts with logged output
-Comment: 11. The pre-defined $PLATFORMFULL$ variable to query platform attributes
+Comment: 10. The Write to Text File command paired with the Run Program command to create shell scripts with piped input
+Comment: 11. The Run Program As command to run console applications while capturing, displaying, and logging their live output
+Comment: 12. The pre-defined $PLATFORMFULL$ variable to query platform attributes
  
 Comment: Additional general scripting commands are used to run programs, disable dialog controls
  
@@ -40,7 +41,7 @@ Set Variable ROSETTA to FALSE
 Set Variable HOMEBREW to TRUE
 Set Variable WINE to TRUE
 Set Variable CONFIGURE to TRUE
-Set Variable WINEPATH to ~/.Wine
+Set Variable WINEPATH to ~/.wine
 Convert to Long Path: WINEPATH 
 Comment: Check for Homebrew
 Does File Exist /usr/local/bin/brew (get result into variable BREW)
@@ -145,7 +146,6 @@ if Variable DMGPATHEX not Equals
   end
   if Variable XCODE_RESULT not Equals 0
     MessageBox: $TITLE$, Installing Xcode Command Line Tools Failed!$NEWLINE$$NEWLINE$Please check your free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $XCODE_RESULT$
-    GoTo Label: Top
   else
     Comment: Don't ask for this again
     Set Variable DMGPATHEX to 
@@ -233,14 +233,17 @@ end
 if Variable WINE Equals TRUE
   Set Variable PROGRESS to 50
   Set Variable COMMAND_DESCRIPTION to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple --custom-remote
-  Set Variable LOGGED_COMMAND to /usr/local/bin/brew tap apple/apple http://github.com/apple/homebrew-apple --custom-remote
+  Set Variable LOGGED_COMMAND to /usr/local/bin/brew
+  Comment: /// is the escape sequence for //
+  Set Variable LOGGED_PARAMS to tap apple/apple http:///github.com/apple/homebrew-apple --custom-remote
   Include Script: logging (get result into variable TAP)
   if Variable TAP not Equals 0
     GoTo Label: Top
   end
   Set Variable PROGRESS to 100
   Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine$NEWLINE$(this will take an extended amount of time)
-  Set Variable LOGGED_COMMAND to /usr/local/bin/brew -v install apple/apple/game-porting-toolkit
+  Set Variable LOGGED_COMMAND to /usr/local/bin/brew
+  Set Variable LOGGED_PARAMS to -v install apple/apple/game-porting-toolkit
   Include Script: logging (get result into variable GPT)
   if Variable GPT not Equals 0
     GoTo Label: Top
@@ -302,7 +305,7 @@ end
 if Variable EXEPATH not Equals 
   Set Variable PROGRESS to 100
   Set Variable COMMAND_DESCRIPTION to Launching PC program$NEWLINE$$EXEPATH$
-  Set Variable ENVIRONMENT to 
+  Set Variable ENVIRONMENT to WINEPREFIX=$WINEPATH$
   Comment: Launches your game with the extended Metal Performance HUD visible
   if Variable HUD Equals TRUE
     Set Variable ENVIRONMENT to $ENVIRONMENT$ MTL_HUD_ENABLED=1
@@ -311,7 +314,8 @@ if Variable EXEPATH not Equals
   if Variable ESYNC Equals TRUE
     Set Variable ENVIRONMENT to $ENVIRONMENT$ WINEESYNC=1
   end
-  Set Variable COMMAND to /usr/local/opt/game-porting-toolkit/bin/wine64 $EXEPATH$
+  Set Variable ENV_COMMAND to /usr/local/opt/game-porting-toolkit/bin/wine64
+  Set Variable ENV_PARAMS to $EXEPATH$
   Comment: Fix for this potential error: "Server is running with WINEESYNC but this process is not, please enable WINEESYNC or restart wineserver."
   Run Program /usr/bin/killall wineserver (WAIT)
   Include Script: env (get result into variable RUN)

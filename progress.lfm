@@ -1319,11 +1319,11 @@ object Bevel2: TBevel
 end
 object CaptionInstall: TLabel
   Left = 96
-  Height = 33
+  Height = 41
   Top = 72
-  Width = 345
+  Width = 355
   AutoSize = False
-  Caption = 'Please wait while the InstallAware Wizard installs $TITLE$. This may take several minutes.'
+  Caption = 'Please wait while the InstallAware Wizard installs $TITLE$. This may take an extended amount of time, depending on the speed of your Internet connection and device.'
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
@@ -1334,7 +1334,7 @@ object CaptionUninstall: TLabel
   Left = 96
   Height = 41
   Top = 72
-  Width = 345
+  Width = 355
   AutoSize = False
   Caption = 'Please wait while the InstallAware Wizard uninstalls $TITLE$. This may take several minutes.'
   Font.Color = clWindowText
@@ -1353,24 +1353,24 @@ object TestRemove: TLabel
 end
 object Label5: TLabel
   Left = 37
-  Height = 13
+  Height = 16
   Top = 24
-  Width = 276
+  Width = 345
   Caption = 'The program features you selected are being configured.'
   Font.Color = 6250335
+  ParentFont = False
 end
 object Label1: TLabel
   Left = 24
   Height = 13
   Top = 8
-  Width = 102
+  Width = 158
   Caption = 'AGPT Installer and Launcher'
-  Font.Color = clWindowText
+  Font.Color = 6250335
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = [fsBold]
   ParentFont = False
-  Font.Color = 6250335
 end
 object Label4: TLabel
   Left = 96
@@ -1418,14 +1418,14 @@ object ProgressBar: TProgressBar
   Tag = 1
   Left = 96
   Height = 17
-  Top = 192
+  Top = 258
   Width = 345
   TabOrder = 0
 end
 object ProgressLabel: TStaticText
   Tag = 1
   Left = 96
-  Height = 41
+  Height = 111
   Top = 144
   Width = 345
   Caption = 'ProgressLabel'

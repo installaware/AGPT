@@ -5,7 +5,8 @@ Comment: ***********************************************************************
 Comment: ******************************
 Comment: Pass these variables as input:
 Comment: ******************************
-Comment: $LOGGED_COMMAND$: Job to execute, including all command line parameters
+Comment: $LOGGED_COMMAND$: Job to execute
+Comment: $LOGGED_PARAMS$: All command line parameters
 Comment: $COMMAND_DESCRIPTION$: Human readable description of job, $NEWLINE$ delimited detail line
  
 Comment: ************
@@ -17,19 +18,12 @@ Comment: If user selects Cancel upon failure, this script shall not return
  
 Comment: Generate fresh file names
 Generate GUID into Variable OUTPUT_LOG
-Generate GUID into Variable LOGGED_TASK
 Comment: Upate textual progress variable
 Set Variable PROGRESSTEXT to $COMMAND_DESCRIPTION$
 Parse String $COMMAND_DESCRIPTION$ into Variables COMMAND_DESCRIPTION and  (Split at first occurrence of pattern)
-Comment: Use Bash shell to run actual task
-Write into Text File $SUPPORTDIR$$LOGGED_TASK$.sh from Value #!/bin/bash (at end of file)
-Comment: Redirect both stdout and stderr to temporary log file
-Write into Text File $SUPPORTDIR$$LOGGED_TASK$.sh from Value $LOGGED_COMMAND$ > "$SUPPORTDIR$$OUTPUT_LOG$.txt" 2>&1 (at end of file)
-Add Read Write Execute Permissions to File System Object "$SUPPORTDIR$$LOGGED_TASK$.sh" for Other Owner Group 
 Comment: Run task
-Run Program /bin/bash "$SUPPORTDIR$$LOGGED_TASK$.sh" (WAIT, get result into variable LOGGED_RESULT)
+Run Program capturing live console output $LOGGED_COMMAND$ $LOGGED_PARAMS$ (WAIT, log output to file $SUPPORTDIR$$OUTPUT_LOG$.txt, get result into variable LOGGED_RESULT)
 if Variable ABORT Equals TRUE
-  Comment: Files placed in $SUPPORTDIR$ are automatically removed when setup quits
   Terminate Installation
 end
 if Variable LOGGED_RESULT not Equals 0
