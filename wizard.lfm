@@ -998,8 +998,9 @@ object Label3: TLabel
   Width = 388
   AutoSize = False
   Caption = 'Install and run your Windows software and games on your Mac. macOS Sonoma and Apple Silicon are optional.'
+  Font.Color = 6250335
+  ParentFont = False
   WordWrap = True
-  Font.Color = 6250335  
 end
 object Label1: TLabel
   Left = 24
@@ -1007,12 +1008,11 @@ object Label1: TLabel
   Top = 8
   Width = 158
   Caption = 'AGPT Installer and Launcher'
-  Font.Color = clWindowText
+  Font.Color = 6250335
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = [fsBold]
   ParentFont = False
-  Font.Color = 6250335
 end
 object Separator: TBevel
   Left = 68
@@ -1086,7 +1086,7 @@ object Next: TButton
   Default = True
   DoubleBuffered = True
   ParentDoubleBuffered = False
-  TabOrder = 11
+  TabOrder = 12
 end
 object Back: TButton
   Tag = 2
@@ -1098,7 +1098,7 @@ object Back: TButton
   DoubleBuffered = True
   Enabled = False
   ParentDoubleBuffered = False
-  TabOrder = 12
+  TabOrder = 13
 end
 object Cancel: TButton
   Tag = 3
@@ -1110,7 +1110,7 @@ object Cancel: TButton
   Caption = 'Cancel'
   DoubleBuffered = True
   ParentDoubleBuffered = False
-  TabOrder = 13
+  TabOrder = 14
 end
 object Homebrew: TCheckBox
   Left = 130
@@ -1130,6 +1130,15 @@ object Wine: TCheckBox
   Caption = 'Install &Wine'
   TabOrder = 2
 end
+object WineEx: TCheckBox
+  Left = 118
+  Height = 18
+  Hint = 'WINEEX'
+  Top = 116
+  Width = 140
+  Caption = 'Using Alternate Method'
+  TabOrder = 3
+end
 object Rosetta: TCheckBox
   Left = 32
   Height = 18
@@ -1147,7 +1156,7 @@ object DMG: TEdit
   Hint = 'DMGPATH'
   Top = 210
   Width = 369
-  TabOrder = 4
+  TabOrder = 5
   Text = '$DMGPATH$'
 end
 object DMGPATH: TButton
@@ -1157,7 +1166,7 @@ object DMGPATH: TButton
   Top = 208
   Width = 75
   Caption = '&Browse...'
-  TabOrder = 5
+  TabOrder = 6
 end
 object EXEPATH: TButton
   Tag = 5
@@ -1166,7 +1175,7 @@ object EXEPATH: TButton
   Top = 256
   Width = 75
   Caption = 'Br&owse...'
-  TabOrder = 7
+  TabOrder = 8
 end
 object EXE: TComboBox
   Tag = 100
@@ -1187,17 +1196,17 @@ object EXE: TComboBox
     'iexplore'
     'uninstaller'
   )
-  TabOrder = 6
+  TabOrder = 7
   Text = '$EXEPATH$'
 end
 object Configure: TCheckBox
-  Left = 120
+  Left = 260
   Height = 18
   Hint = 'CONFIGURE'
   Top = 116
   Width = 184
   Caption = 'and &Configure Windows Settings'
-  TabOrder = 3
+  TabOrder = 4
 end
 object EXEPATHEX: TButton
   Tag = 5
@@ -1206,7 +1215,7 @@ object EXEPATHEX: TButton
   Top = 284
   Width = 181
   Caption = 'Browse for &Existing Software...'
-  TabOrder = 8
+  TabOrder = 9
 end
 object CheckWine: TLabel
   Left = 60
@@ -1223,7 +1232,7 @@ object HUD: TCheckBox
   Top = 286
   Width = 87
   Caption = 'Display H&UD'
-  TabOrder = 9
+  TabOrder = 10
 end
 object ESYNC: TCheckBox
   Left = 150
@@ -1232,6 +1241,6 @@ object ESYNC: TCheckBox
   Top = 286
   Width = 133
   Caption = '&Improve Compatibility'
-  TabOrder = 10
+  TabOrder = 11
 end
 end

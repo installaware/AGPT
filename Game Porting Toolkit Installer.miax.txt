@@ -34,6 +34,7 @@ Set Variable DMGPATHEX to
 Set Variable EXEPATH to 
 Set Variable HUD to FALSE
 Set Variable ESYNC to TRUE
+Set Variable WINEEX to FALSE
 label: Top
 Comment: (Re)Initialize checkbox and path variables
 Set Variable SUDO to 
@@ -231,22 +232,46 @@ if Variable HOMEBREW Equals TRUE
   end
 end
 if Variable WINE Equals TRUE
-  Set Variable PROGRESS to 50
-  Set Variable COMMAND_DESCRIPTION to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple --custom-remote
-  Set Variable LOGGED_COMMAND to /usr/local/bin/brew
-  Comment: /// is the escape sequence for //
-  Set Variable LOGGED_PARAMS to tap apple/apple http:///github.com/apple/homebrew-apple --custom-remote
-  Include Script: logging (get result into variable TAP)
-  if Variable TAP not Equals 0
-    GoTo Label: Top
-  end
-  Set Variable PROGRESS to 100
-  Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine$NEWLINE$(this will take an extended amount of time)
-  Set Variable LOGGED_COMMAND to /usr/local/bin/brew
-  Set Variable LOGGED_PARAMS to -v install apple/apple/game-porting-toolkit
-  Include Script: logging (get result into variable GPT)
-  if Variable GPT not Equals 0
-    GoTo Label: Top
+  if Variable WINEEX Equals TRUE
+    Set Variable PROGRESS to 70
+    Set Variable COMMAND_DESCRIPTION to Tapping Gcenx Homebrew$NEWLINE$gcenx/homebrew-apple
+    Set Variable LOGGED_COMMAND to /usr/local/bin/brew
+    Comment: /// is the escape sequence for //
+    Set Variable LOGGED_PARAMS to tap gcenx/homebrew-apple http:///github.com/gcenx/homebrew-apple --custom-remote
+    Include Script: logging (get result into variable TAP)
+    if Variable TAP not Equals 0
+      GoTo Label: Top
+    end
+    Set Variable PROGRESS to 100
+    Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine (Using Alternate Method)$NEWLINE$(this will take an extended amount of time)
+    Set Variable LOGGED_COMMAND to /usr/local/bin/brew
+    Set Variable LOGGED_PARAMS to install gcenx/wine/game-porting-toolkit
+    Include Script: logging (get result into variable GPT)
+    if Variable GPT not Equals 0
+      GoTo Label: Top
+    end
+  else
+    Set Variable PROGRESS to 50
+    Set Variable COMMAND_DESCRIPTION to Tapping Apple Homebrew$NEWLINE$apple/apple http://github.com/apple/homebrew-apple --custom-remote
+    Set Variable LOGGED_COMMAND to /usr/local/bin/brew
+    Comment: /// is the escape sequence for //
+    Set Variable LOGGED_PARAMS to tap apple/apple http:///github.com/apple/homebrew-apple --custom-remote
+    Include Script: logging (get result into variable TAP)
+    if Variable TAP not Equals 0
+      GoTo Label: Top
+    end
+    Set Variable PROGRESS to 100
+    Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine$NEWLINE$(this will take an extended amount of time)
+    Set Variable LOGGED_COMMAND to /usr/local/bin/brew
+    Set Variable LOGGED_PARAMS to install apple/apple/game-porting-toolkit
+    Include Script: logging (get result into variable GPT)
+    if Variable GPT not Equals 0
+      if Variable WINEEX Equals FALSE
+        MessageBox: $TITLE$, Since the original Wine installation method just failed, we have now enabled the alternate installation method.$NEWLINE$$NEWLINE$If you are confident you have sufficient disk space (as well as a stable Internet connection), please click Next immediately after closing this message to try again using the alternate method.$NEWLINE$
+        Set Variable WINEEX to TRUE
+      end
+      GoTo Label: Top
+    end
   end
 end
 if Variable CONFIGURE Equals TRUE
