@@ -1041,16 +1041,16 @@ object Label2: TLabel
   Left = 32
   Height = 13
   Top = 72
-  Width = 402
-  Caption = 'Requirements that will be automatically installed: (already found when unchecked)'
+  Width = 410
+  Caption = 'Requirements that will be automatically installed: (already present when unchecked)'
 end
 object Label4: TLabel
   Left = 32
-  Height = 40
-  Top = 146
+  Height = 53
+  Top = 138
   Width = 450
   AutoSize = False
-  Caption = 'All fields below are optional. To run 3D games with the highest performance, download AGPT and select its DMG file (you only need to do this once). To launch Windows apps, Browse for their setups or for Existing Software shortcuts/apps, or use the drop-down.'
+  Caption = 'All fields below are optional. To run 3D games with the highest performance, download AGPT and select its DMG file (you only need to do this once). To install Windows apps, Browse for their setups. To run installed Windows apps, Browse for Existing Software, or use the drop-down for Wine supplied default tools.'
   WordWrap = True
 end
 object URL: TLabel
@@ -1072,8 +1072,8 @@ object Label6: TLabel
   Left = 32
   Height = 13
   Top = 242
-  Width = 346
-  Caption = 'Windows &game (or software) to launch: (typically a setup file, optional)'
+  Width = 107
+  Caption = '&Launch Windows app:'
   FocusControl = frmDesign.EXE
 end
 object Next: TButton
@@ -1086,7 +1086,7 @@ object Next: TButton
   Default = True
   DoubleBuffered = True
   ParentDoubleBuffered = False
-  TabOrder = 12
+  TabOrder = 13
 end
 object Back: TButton
   Tag = 2
@@ -1094,11 +1094,11 @@ object Back: TButton
   Height = 23
   Top = 325
   Width = 75
-  Caption = '< &Back'
+  Caption = '< Back'
   DoubleBuffered = True
   Enabled = False
   ParentDoubleBuffered = False
-  TabOrder = 13
+  TabOrder = 14
 end
 object Cancel: TButton
   Tag = 3
@@ -1110,13 +1110,13 @@ object Cancel: TButton
   Caption = 'Cancel'
   DoubleBuffered = True
   ParentDoubleBuffered = False
-  TabOrder = 14
+  TabOrder = 15
 end
 object Homebrew: TCheckBox
   Left = 130
   Height = 18
   Hint = 'HOMEBREW'
-  Top = 96
+  Top = 90
   Width = 112
   Caption = 'Install &Homebrew'
   TabOrder = 1
@@ -1125,7 +1125,7 @@ object Wine: TCheckBox
   Left = 32
   Height = 18
   Hint = 'WINE'
-  Top = 116
+  Top = 110
   Width = 84
   Caption = 'Install &Wine'
   TabOrder = 2
@@ -1134,16 +1134,16 @@ object WineEx: TCheckBox
   Left = 118
   Height = 18
   Hint = 'WINEEX'
-  Top = 116
-  Width = 140
-  Caption = 'Using Alternate Method'
+  Top = 110
+  Width = 125
+  Caption = 'using &Faster Method'
   TabOrder = 3
 end
 object Rosetta: TCheckBox
   Left = 32
   Height = 18
   Hint = 'ROSETTA'
-  Top = 96
+  Top = 90
   Width = 96
   Caption = 'Install &Rosetta'
   Enabled = False
@@ -1200,10 +1200,10 @@ object EXE: TComboBox
   Text = '$EXEPATH$'
 end
 object Configure: TCheckBox
-  Left = 260
+  Left = 244
   Height = 18
   Hint = 'CONFIGURE'
-  Top = 116
+  Top = 110
   Width = 184
   Caption = 'and &Configure Windows Settings'
   TabOrder = 4
@@ -1232,7 +1232,7 @@ object HUD: TCheckBox
   Top = 286
   Width = 87
   Caption = 'Display H&UD'
-  TabOrder = 10
+  TabOrder = 11
 end
 object ESYNC: TCheckBox
   Left = 150
@@ -1241,6 +1241,15 @@ object ESYNC: TCheckBox
   Top = 286
   Width = 133
   Caption = '&Improve Compatibility'
-  TabOrder = 11
+  TabOrder = 12
+end
+object Shortcut: TCheckBox
+  Left = 148
+  Height = 18
+  Hint = 'DESKTOPSHORTCUT'
+  Top = 239
+  Width = 336
+  Caption = '&Place a shortcut on your Desktop that directly launches this app'
+  TabOrder = 10
 end
 end

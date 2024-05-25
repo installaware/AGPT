@@ -23,6 +23,17 @@ Comment
 Comment
 Comment
 Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
+Comment
 Code Folding Region
 Comment
 If
@@ -35,6 +46,10 @@ Set Variable
 Set Variable
 Set Variable
 Set Variable
+Set Variable
+Get Folder Location
+Set Variable
+Convert Path
 Label
 Comment
 Set Variable
@@ -343,6 +358,37 @@ Set Variable
 Set Variable
 Comment
 Run Program
+Comment
+If
+Comment
+Set Variable
+Extract Path
+Set Variable
+Extract Path
+Comment
+Copy/Move Local Files
+Create Shortcut
+Comment
+Set Variable
+Replace String
+Repeat
+Read from Text File
+Comment
+Replace String
+Replace String
+Replace String
+Comment
+If
+Set Variable
+End
+Write to Text File
+Until
+Comment
+Delete Files
+Rename File/Folder
+Comment
+Set Access Control
+End
 Include Script
 If
 Terminate Install
@@ -372,8 +418,19 @@ $
 {CDF2C0A9-348E-B5C2-71AC-8497C4F4BF38}
 {B6A84DC0-2DAE-74F7-FF5C-07CD755A7987}
 {5E6D4278-0AE4-1727-406E-4AC9AED7C11B}
+{BB896221-112E-0EB7-E857-3BD8C5218DC8}
+{422DD03B-E1B0-8B24-F07C-280D2D4E439B}
+{A179332A-B627-201A-ADAE-C40746819F61}
 {666B1A2F-165A-A77D-82D0-DEB931B90458}
 {49A71A03-A214-A6B4-6841-9A7EA838972E}
+{565C8432-7C10-C287-C0F6-D7080904C38B}
+{829D149D-F4BF-7112-F070-AA47F135D72D}
+{96502466-2C23-EE4F-8C0E-60DF755071B1}
+{ED7F0108-311E-9E40-5B0B-9FA6402F98AB}
+{8928F1BC-8F1A-CC0F-ECA3-2DA3F69E3FAB}
+{0E919AC0-22C8-E9DB-A349-5688F7C8725B}
+{C6E21EBB-CC17-55A8-5BC2-97D9FD6002A4}
+{D854B4AB-1C1B-8328-467A-475FA52849F8}
 {6D659BF7-65A2-6AD9-275C-091F84BDD7AE}
 {2A6CDEC2-22B4-C980-0B89-05F2F2359C69}
 {32F46237-944C-01BD-8D49-205B5201EF08}
@@ -391,6 +448,10 @@ $
 {56F905CE-A08B-D2C5-0FC7-DC8BAF10D1C7}
 {E58D05C0-3AB8-D273-4794-46610F24B725}
 {301A7AB8-2252-34B1-0A60-90D2D375B3A7}
+{2260739E-65F9-D9A0-2F83-809537DB4DCE}
+{0D0AC4E2-8AD2-8080-B753-55042501C710}
+{7D5AE094-82FB-615E-F57A-B3419CEF14E9}
+{DA2A073C-22C2-76A7-78DE-B58D4D9BBCCD}
 {BBE90D81-73D3-5250-C921-C09C95637D26}
 {1B8F77DD-D043-5899-0513-638C5540CA36}
 {98FFA559-10BA-A9E2-7E5E-58E1CB5E9F67}
@@ -699,6 +760,37 @@ $
 {8AC81004-348F-06D3-2CDF-28045461AE2E}
 {6A6FF40B-CCCB-1352-A44D-8717C944ACF1}
 {62676D4E-BF1B-D90A-D06D-E62FC0752EFB}
+{0B3F5E8A-A449-0966-9372-C15542800CC8}
+{4CBC1A44-9358-08AD-39E1-274179277DCA}
+{EDB69026-A41B-DB9C-AC8C-FF07EC166140}
+{1E39D82D-EF9C-2C48-0292-B9E4597EF0A9}
+{648A6352-1E4E-C55E-15C8-6EF3B4C5029E}
+{72A226A9-538A-B144-C555-47678D7754F0}
+{B71C3B16-332C-176C-28EB-E4E731B496A2}
+{559D7E0F-2240-2599-7B8F-285B13DA0A11}
+{191E329C-A59F-6B58-6D0C-04C39E658FEA}
+{BF853233-5742-7C3E-6837-25DC8CE759D7}
+{FE4CCEB6-46BA-5E0E-A717-B43B1CD1977D}
+{B91B86B0-5AFE-7779-D671-958DAB750AD0}
+{27E38D2F-DBF5-812C-2901-CE0278DA1413}
+{36FA9A96-73FA-52E1-0967-BB37A2AC0333}
+{4EB8392C-DCB1-C7FA-B317-FE666F3DE046}
+{AF6F93AC-B722-96DF-BE3F-CA3AF12B8AD9}
+{37857868-F21F-DFB7-5755-19EE76D6F257}
+{736AE3F2-4A50-D691-BA18-CD961519B8CC}
+{7EE13F45-B0A9-0553-9B8C-CE374E7E893F}
+{2404ADA2-52EF-DE3C-D9F1-A978333D93E4}
+{632CB58E-8CB6-583E-7187-0FAC8FCE2B42}
+{310E2718-2C75-8230-F661-10AF453F0D8C}
+{0CC40E8C-B29F-27B3-3923-998FA3FB787D}
+{0727543D-9FF7-A19A-062B-54056140306E}
+{0A657311-21F1-2724-E75C-EF290698DF6D}
+{5904B086-1088-CFDF-0285-5364E8E27368}
+{8D038903-BC0F-26B0-CEF9-7BF57BE9218C}
+{1154EBF3-FF70-C840-9E60-02005B3B27AD}
+{CAC0D7E2-4C7D-1A92-A6DD-3CF1D90D4544}
+{C6AA67F3-ADDF-E3FE-215B-6151ECE5F7A0}
+{D3FAD8FA-15FC-AC5A-3B95-7890F1AD2544}
 {0C0F0F51-A3F3-410D-A2A2-EB2E47FBCB77}
 {76413B07-8DF8-87A9-3EB6-A9073C4FEB99}
 {CDE28D73-832D-8E08-14E6-1501A5A590E6}
@@ -710,9 +802,18 @@ $
 {D370E7AD-2199-B593-3F16-D86287D63097}
 {059F572F-FC3A-66C8-EC43-5B9DB14A8590}
 $
+{4EB8392C-DCB1-C7FA-B317-FE666F3DE046}
+$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$
+COMMANDLINE
+EOF
 {73D7873E-83A3-E81C-5B79-029CDF372011}
 $SUPPORTDIR$y.txt
 y
+0
+-1
+{0727543D-9FF7-A19A-062B-54056140306E}
+$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$.buffer
+$COMMANDLINE$
 0
 -1
 {C68FA958-14B4-EFB8-EA2B-30276F04DD94}
@@ -728,6 +829,11 @@ uninstall.sh
 {0FC0AD9C-CB1B-DAE4-6E60-62B96F3F3AC9}
 $SUPPORTDIR$
 y.txt
+-1
+0
+{8D038903-BC0F-26B0-CEF9-7BF57BE9218C}
+$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS
+$COMMANDNAME$
 -1
 0
 {D0F9E1B8-0247-67BF-1AD3-02F72CDA0688}
@@ -790,6 +896,16 @@ FALSE
 wineserver
 TRUE
 
+{BF853233-5742-7C3E-6837-25DC8CE759D7}
+$ENV_COMMAND$|0
+$WINDOWS_APP$ for Windows
+$DESKTOPDIR$|0
+Launcher for $WINDOWSAPP$
+$ENV_PARAMS$
+|0
+$HOMEDIR$/agpt.icns|0
+|
+0|
 {059F572F-FC3A-66C8-EC43-5B9DB14A8590}
 
 {733D3E7B-B78A-DD47-F8FE-362739FFA527}
@@ -815,7 +931,7 @@ See in-code comments for more information.
 {32F46237-944C-01BD-8D49-205B5201EF08}
 
 {2A6CDEC2-22B4-C980-0B89-05F2F2359C69}
-Additional general scripting commands are used to run programs, disable dialog controls
+Additional general scripting commands are used such as Set Variable to toggle GUI object enabled states, etc.
 {6D659BF7-65A2-6AD9-275C-091F84BDD7AE}
 
 {9D528F2B-5493-E1AC-6EEF-75FE3C584D1F}
@@ -831,7 +947,7 @@ This project uses:
 {1CBA444A-4115-6671-EF46-010888854216}
 Game Porting Toolkit Installation Example
 {64FE9EB8-AFB5-2E10-E0B4-E1FF6766C536}
-4. The Set Access Control command to set executable permissions on emitted scripts
+4. The Set Access Control command to set executable permissions on emitted shell scripts
 {274E0F06-FA1A-0C2C-B7FF-D86990557FB5}
 5. The Find All Files command to locate folders of unknown names on a given path
 {0DC73E1E-3561-7515-4506-D61084C6F6CE}
@@ -841,13 +957,13 @@ Game Porting Toolkit Installation Example
 {29FDAE08-5A0D-6B57-B538-C52E09B06330}
 2. The Prompt for Text command to capture custom string input
 {A0B3C72A-B7BF-8400-91DF-DD857F584C64}
-3. The Convert Path command to obtain fully qualified file paths from relatives
+3. The Convert Path command to obtain fully qualified file paths from relative file paths
 {CDF2C0A9-348E-B5C2-71AC-8497C4F4BF38}
 8. The Download File command to obtain files from the Internet at runtime
 {5E6D4278-0AE4-1727-406E-4AC9AED7C11B}
-10. The Write to Text File command paired with the Run Program command to create shell scripts with piped input
+10. The Write to Text File command to create shell scripts and input files (that are later piped in during execution)
 {49A71A03-A214-A6B4-6841-9A7EA838972E}
-12. The pre-defined $PLATFORMFULL$ variable to query platform attributes
+15. The pre-defined $PLATFORMFULL$ variable to query and enforce CPU architecture
 {677F0C74-A6D9-D092-08D9-8D6AF6758831}
 Since this setup shall be compiled by IAMP for Intel, Rosetta would never need explicit installation
 {1B8F77DD-D043-5899-0513-638C5540CA36}
@@ -879,13 +995,51 @@ Launches your game with Wine's ESYNC option, a common compatibility flag
 {6A6FF40B-CCCB-1352-A44D-8717C944ACF1}
 Fix for this potential error: "Server is running with WINEESYNC but this process is not, please enable WINEESYNC or restart wineserver."
 {666B1A2F-165A-A77D-82D0-DEB931B90458}
-11. The Run Program As command to run console applications while capturing, displaying, and logging their live output
+14. The Run Program As command to run console applications while capturing and displaying their live output in your own setup window; as well as logging
 {71275D4C-EE0A-25CD-EDCC-9BA401232FF5}
 /// is the escape sequence for //
 {E57203D8-8E6F-1629-FEC2-05FA946FC797}
 This project shows how to handle dialog events and build a highly custom script that doesn't directly install anything
 {8F137FDB-502E-79EF-2E69-7C1310D13F1F}
 /// is the escape sequence for //
+{0B3F5E8A-A449-0966-9372-C15542800CC8}
+First create requested independent Desktop launcher for app
+{A179332A-B627-201A-ADAE-C40746819F61}
+13. The Run Program command to run shell scripts with piped input
+{422DD03B-E1B0-8B24-F07C-280D2D4E439B}
+12. The Create Shortcut command to place links on the Desktop for launching apps
+{BB896221-112E-0EB7-E857-3BD8C5218DC8}
+11. The Extract Path command to obtain only the name of a file, without any path qualifier or file extension; as well as to obtain the parent directory of a given folder
+{565C8432-7C10-C287-C0F6-D7080904C38B}
+16. The Get Folder Location command to obtain the full path to the Desktop directory
+{559D7E0F-2240-2599-7B8F-285B13DA0A11}
+Cache default setup icon for shortcut
+{829D149D-F4BF-7112-F070-AA47F135D72D}
+17. The Copy/Move Local Files command to create a local, permanent copy of the (default) setup icon; as well as to clone the default Create Shortcut shell script
+{96502466-2C23-EE4F-8C0E-60DF755071B1}
+18. The Read from Text File command to read the default Create Shortcut shell script
+{ED7F0108-311E-9E40-5B0B-9FA6402F98AB}
+19. The Replace String command to modify the default Create Shortcut shell script, setting custom environment parameters
+{EDB69026-A41B-DB9C-AC8C-FF07EC166140}
+Parse shortcut name
+{FE4CCEB6-46BA-5E0E-A717-B43B1CD1977D}
+Fixup auto generated shortcut script name
+{2404ADA2-52EF-DE3C-D9F1-A978333D93E4}
+Inject environment variables into the created shortcut script
+{AF6F93AC-B722-96DF-BE3F-CA3AF12B8AD9}
+Remove open command(s) parameter(s) designed to launch GUI app bundles
+{5904B086-1088-CFDF-0285-5364E8E27368}
+Replace default script with fixed-up script
+{CAC0D7E2-4C7D-1A92-A6DD-3CF1D90D4544}
+Add execute permissions to the fixed-up script
+{8928F1BC-8F1A-CC0F-ECA3-2DA3F69E3FAB}
+20. The Repeat and Until commands to read from (and write to) a text file from beginning to end
+{0E919AC0-22C8-E9DB-A349-5688F7C8725B}
+21. The Set Access Control command to add execute privileges to a customized Create Shortcut shell script
+{C6E21EBB-CC17-55A8-5BC2-97D9FD6002A4}
+22. The Delete Files command to delete temporary files
+{D854B4AB-1C1B-8328-467A-475FA52849F8}
+23. The Rename File/Folder command to commit the customized Create Shortcut shell script
 {61E35184-9B92-C322-F6BA-322F472C48FA}
 $TITLE$
 Homebrew x86_64 Installation Failed!$NEWLINE$$NEWLINE$Please check your Internet connection, free disk space, and try again.$NEWLINE$$NEWLINE$Error code: $HOMEBREW$
@@ -984,7 +1138,7 @@ Apple Game Porting Toolkit Copy Failed!$NEWLINE$$NEWLINE$DirectX 12 games may no
 
 {E5DF2184-2CDA-2EC0-9D59-A72DA172F30B}
 $TITLE$
-Since the original Wine installation method just failed, we have now enabled the alternate installation method.$NEWLINE$$NEWLINE$If you are confident you have sufficient disk space (as well as a stable Internet connection), please click Next immediately after closing this message to try again using the alternate method.$NEWLINE$
+Since the original Wine installation method just failed, we have now enabled the alternate installation method (called the "Faster" method, as it is substantially faster than the default original).$NEWLINE$$NEWLINE$If you are confident you have sufficient disk space (as well as a stable Internet connection), please click Next immediately after closing this message to try again using the Faster method.
 2
 1
 
@@ -1206,7 +1360,7 @@ LOGGED_COMMAND$MYAH$MYAH$FALSE
 /usr/local/bin/brew
 {3A94A13B-B29A-A43E-C8C9-ADAA49BC858D}
 COMMAND_DESCRIPTION$MYAH$MYAH$FALSE
-Downloading and Installing Wine (Using Alternate Method)$NEWLINE$(this will take an extended amount of time)
+Downloading and Installing Wine (Using Faster Method)$NEWLINE$(this will take an extended amount of time)
 {41C5093B-BAB5-B217-4D90-E78BEC206230}
 PROGRESS$MYAH$MYAH$FALSE
 100
@@ -1225,6 +1379,24 @@ PROGRESS$MYAH$MYAH$FALSE
 {EF680FD8-ADC2-7121-C4DE-6A5BA512979E}
 PROGRESS$MYAH$MYAH$FALSE
 70
+{2260739E-65F9-D9A0-2F83-809537DB4DCE}
+DESKTOPSHORTCUT$MYAH$MYAH$FALSE
+FALSE
+{1E39D82D-EF9C-2C48-0292-B9E4597EF0A9}
+WINDOWS_APP$MYAH$MYAH$FALSE
+$EXEPATH$
+{7D5AE094-82FB-615E-F57A-B3419CEF14E9}
+HOMEDIR$MYAH$MYAH$FALSE
+~/
+{72A226A9-538A-B144-C555-47678D7754F0}
+CONTENTSDIR$MYAH$MYAH$FALSE
+$EXEDIR$
+{B91B86B0-5AFE-7779-D671-958DAB750AD0}
+COMMANDNAME$MYAH$MYAH$FALSE
+$WINDOWS_APP$ for Windows.command
+{310E2718-2C75-8230-F661-10AF453F0D8C}
+COMMANDLINE$MYAH$MYAH$FALSE
+$ENVIRONMENT$ $COMMANDLINE$
 {EFDECCE6-1726-52E7-416F-D26AADF38B44}
 HOMEBREW
 0
@@ -1530,6 +1702,16 @@ TAP
 0
 0
 TRUE
+{4CBC1A44-9358-08AD-39E1-274179277DCA}
+DESKTOPSHORTCUT
+0
+TRUE
+FALSE
+{632CB58E-8CB6-583E-7187-0FAC8FCE2B42}
+COMMANDLINE
+3
+wine64
+FALSE
 {6770BE84-929F-2BA6-1040-1DF8C9698279}
 sudo|HOMEBREW
 {07A29C74-258E-DF06-23FE-A33CEDD5B4C1}
@@ -1610,6 +1792,10 @@ Top
 Top
 {09367F3B-9FDF-9B33-E0E3-A6C703A5DA6D}
 Top
+{0D0AC4E2-8AD2-8080-B753-55042501C710}
+DESKTOPDIR
+17
+FALSE
 {7110C11A-093F-05B7-38A8-DA71E0ACD333}
 https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 $SUPPORTDIR$install.sh
@@ -1641,11 +1827,31 @@ $SUPPORTDIR$y.txt
 0
 0
 0
+{C6AA67F3-ADDF-E3FE-215B-6151ECE5F7A0}
+$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$
+0
+-1
+0
+0
+
+0
+0|-1
+-1
+0
+0
+-1
+0
+0
+0
+0
 {5366B751-CC74-5089-E346-1B827C35A5F1}
 WINEPATH
 0
 {953A342C-BE53-C6EA-E635-82D63C959A05}
 DOWNLOADPATH
+0
+{DA2A073C-22C2-76A7-78DE-B58D4D9BBCCD}
+HOMEDIR
 0
 {6A772E13-DF6E-5354-AF6F-F6BD445BC26E}
 MOUNTPATH
@@ -1656,6 +1862,30 @@ MOUNTPATH
 {EF8CAF7F-6679-C861-361B-F2C7744175F9}
 MOUNTPATH
 "
+
+-1
+-1
+{27E38D2F-DBF5-812C-2901-CE0278DA1413}
+COMMANDNAME
+ 
+
+-1
+-1
+{7EE13F45-B0A9-0553-9B8C-CE374E7E893F}
+COMMANDLINE
+ --args
+
+-1
+-1
+{37857868-F21F-DFB7-5755-19EE76D6F257}
+COMMANDLINE
+open -a
+
+-1
+-1
+{736AE3F2-4A50-D691-BA18-CD961519B8CC}
+COMMANDLINE
+open
 
 -1
 -1
@@ -1729,6 +1959,27 @@ $SUPPORTDIR$/xcode/*
 0
 -1|0
 MOUNTPATH
+{191E329C-A59F-6B58-6D0C-04C39E658FEA}
+$CONTENTSDIR$/Resources
+miaxstub.icns
+$HOMEDIR$
+agpt.icns
+-1|0
+0|0
+{1154EBF3-FF70-C840-9E60-02005B3B27AD}
+$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$.buffer
+$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$
+{648A6352-1E4E-C55E-15C8-6EF3B4C5029E}
+WINDOWS_APP
+1
+{B71C3B16-332C-176C-28EB-E4E731B496A2}
+CONTENTSDIR
+4
+{0A657311-21F1-2724-E75C-EF290698DF6D}
+EOF
+0
+TRUE
+FALSE
 $
 
 
@@ -2085,7 +2336,99 @@ $
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

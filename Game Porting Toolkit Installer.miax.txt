@@ -8,18 +8,29 @@ Comment: This project uses:
 Comment: ------------------
 Comment: 1. The Browse for File command to select files of particular types
 Comment: 2. The Prompt for Text command to capture custom string input
-Comment: 3. The Convert Path command to obtain fully qualified file paths from relatives
-Comment: 4. The Set Access Control command to set executable permissions on emitted scripts
+Comment: 3. The Convert Path command to obtain fully qualified file paths from relative file paths
+Comment: 4. The Set Access Control command to set executable permissions on emitted shell scripts
 Comment: 5. The Find All Files command to locate folders of unknown names on a given path
 Comment: 6. The Label command to define custom execution points
 Comment: 7. The GoTo command to direct program flow to a label
 Comment: 8. The Download File command to obtain files from the Internet at runtime
 Comment: 9. The (Return from) Include Script commands to automate the task of running jobs with sudo, logging, and environment variables
-Comment: 10. The Write to Text File command paired with the Run Program command to create shell scripts with piped input
-Comment: 11. The Run Program As command to run console applications while capturing, displaying, and logging their live output
-Comment: 12. The pre-defined $PLATFORMFULL$ variable to query platform attributes
+Comment: 10. The Write to Text File command to create shell scripts and input files (that are later piped in during execution)
+Comment: 11. The Extract Path command to obtain only the name of a file, without any path qualifier or file extension; as well as to obtain the parent directory of a given folder
+Comment: 12. The Create Shortcut command to place links on the Desktop for launching apps
+Comment: 13. The Run Program command to run shell scripts with piped input
+Comment: 14. The Run Program As command to run console applications while capturing and displaying their live output in your own setup window; as well as logging
+Comment: 15. The pre-defined $PLATFORMFULL$ variable to query and enforce CPU architecture
+Comment: 16. The Get Folder Location command to obtain the full path to the Desktop directory
+Comment: 17. The Copy/Move Local Files command to create a local, permanent copy of the (default) setup icon; as well as to clone the default Create Shortcut shell script
+Comment: 18. The Read from Text File command to read the default Create Shortcut shell script
+Comment: 19. The Replace String command to modify the default Create Shortcut shell script, setting custom environment parameters
+Comment: 20. The Repeat and Until commands to read from (and write to) a text file from beginning to end
+Comment: 21. The Set Access Control command to add execute privileges to a customized Create Shortcut shell script
+Comment: 22. The Delete Files command to delete temporary files
+Comment: 23. The Rename File/Folder command to commit the customized Create Shortcut shell script
  
-Comment: Additional general scripting commands are used to run programs, disable dialog controls
+Comment: Additional general scripting commands are used such as Set Variable to toggle GUI object enabled states, etc.
  
 Comment: See in-code comments for more information.
  
@@ -35,6 +46,10 @@ Set Variable EXEPATH to
 Set Variable HUD to FALSE
 Set Variable ESYNC to TRUE
 Set Variable WINEEX to FALSE
+Set Variable DESKTOPSHORTCUT to FALSE
+Get Folder Location System->Desktop Directory into DESKTOPDIR
+Set Variable HOMEDIR to ~/
+Convert to Long Path: HOMEDIR 
 label: Top
 Comment: (Re)Initialize checkbox and path variables
 Set Variable SUDO to 
@@ -243,7 +258,7 @@ if Variable WINE Equals TRUE
       GoTo Label: Top
     end
     Set Variable PROGRESS to 100
-    Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine (Using Alternate Method)$NEWLINE$(this will take an extended amount of time)
+    Set Variable COMMAND_DESCRIPTION to Downloading and Installing Wine (Using Faster Method)$NEWLINE$(this will take an extended amount of time)
     Set Variable LOGGED_COMMAND to /usr/local/bin/brew
     Set Variable LOGGED_PARAMS to install gcenx/wine/game-porting-toolkit
     Include Script: logging (get result into variable GPT)
@@ -267,7 +282,7 @@ if Variable WINE Equals TRUE
     Include Script: logging (get result into variable GPT)
     if Variable GPT not Equals 0
       if Variable WINEEX Equals FALSE
-        MessageBox: $TITLE$, Since the original Wine installation method just failed, we have now enabled the alternate installation method.$NEWLINE$$NEWLINE$If you are confident you have sufficient disk space (as well as a stable Internet connection), please click Next immediately after closing this message to try again using the alternate method.$NEWLINE$
+        MessageBox: $TITLE$, Since the original Wine installation method just failed, we have now enabled the alternate installation method (called the "Faster" method, as it is substantially faster than the default original).$NEWLINE$$NEWLINE$If you are confident you have sufficient disk space (as well as a stable Internet connection), please click Next immediately after closing this message to try again using the Faster method.
         Set Variable WINEEX to TRUE
       end
       GoTo Label: Top
@@ -343,6 +358,37 @@ if Variable EXEPATH not Equals
   Set Variable ENV_PARAMS to $EXEPATH$
   Comment: Fix for this potential error: "Server is running with WINEESYNC but this process is not, please enable WINEESYNC or restart wineserver."
   Run Program /usr/bin/killall wineserver (WAIT)
+  Comment: First create requested independent Desktop launcher for app
+  if Variable DESKTOPSHORTCUT Equals TRUE
+    Comment: Parse shortcut name
+    Set Variable WINDOWS_APP to $EXEPATH$
+    Extract File Name Only: WINDOWS_APP
+    Set Variable CONTENTSDIR to $EXEDIR$
+    Extract Parent Folder: CONTENTSDIR
+    Comment: Cache default setup icon for shortcut
+    Copy Local Files $CONTENTSDIR$/Resources/miaxstub.icns to $HOMEDIR$/agpt.icns
+    Create Shortcut $DESKTOPDIR$/$WINDOWS_APP$ for Windows to $ENV_COMMAND$
+    Comment: Fixup auto generated shortcut script name
+    Set Variable COMMANDNAME to $WINDOWS_APP$ for Windows.command
+    Replace   with  in variable COMMANDNAME
+    repeat
+      Read from Text File $DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$ into Variable COMMANDLINE (get EOF into EOF)
+      Comment: Remove open command(s) parameter(s) designed to launch GUI app bundles
+      Replace open -a with  in variable COMMANDLINE
+      Replace open with  in variable COMMANDLINE
+      Replace  --args with  in variable COMMANDLINE
+      Comment: Inject environment variables into the created shortcut script
+      if Variable COMMANDLINE Contains (Ignore Case) wine64
+        Set Variable COMMANDLINE to $ENVIRONMENT$ $COMMANDLINE$
+      end
+      Write into Text File $DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$.buffer from Value $COMMANDLINE$ (at end of file)
+    until Variable EOF Equals TRUE
+    Comment: Replace default script with fixed-up script
+    Delete Files $DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$ (when installing)
+    Rename $DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$.buffer to $DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$
+    Comment: Add execute permissions to the fixed-up script
+    Add Execute Permissions to File System Object "$DESKTOPDIR$/$WINDOWS_APP$ for Windows.app/Contents/MacOS/$COMMANDNAME$" for Owner 
+  end
   Include Script: env (get result into variable RUN)
   if Variable ABORT Equals TRUE
     Terminate Installation
