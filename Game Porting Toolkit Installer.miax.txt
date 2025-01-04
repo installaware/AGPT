@@ -45,7 +45,7 @@ Set Variable DMGPATHEX to
 Set Variable EXEPATH to 
 Set Variable HUD to FALSE
 Set Variable ESYNC to TRUE
-Set Variable WINEEX to FALSE
+Set Variable WINEEX to TRUE
 Set Variable DESKTOPSHORTCUT to FALSE
 Get Folder Location System->Desktop Directory into DESKTOPDIR
 Set Variable HOMEDIR to ~/
