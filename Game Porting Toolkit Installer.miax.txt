@@ -29,6 +29,7 @@ Comment: 20. The Repeat and Until commands to read from (and write to) a text fi
 Comment: 21. The Set Access Control command to add execute privileges to a customized Create Shortcut shell script
 Comment: 22. The Delete Files command to delete temporary files
 Comment: 23. The Rename File/Folder command to commit the customized Create Shortcut shell script
+Comment: 24. The Does File/Folder Exist command to check whether select files exist
  
 Comment: Additional general scripting commands are used such as Set Variable to toggle GUI object enabled states, etc.
  
@@ -289,10 +290,17 @@ if Variable WINE Equals TRUE
     end
   end
 end
+Comment: At this point, AGPT has been installed by Wine
+Set Variable WHICH to /usr/local/opt/game-porting-toolkit/bin/wine64
+Does File Exist $WHICH$ (get result into variable WHICHEXISTS)
+if Variable WHICHEXISTS Equals FALSE
+  Comment: Apple has updated the AGPT install location
+  Set Variable WHICH to /usr/local/bin/wine64
+end
 if Variable CONFIGURE Equals TRUE
-  Set Variable PROGRESSTEXT to Configuring Windows Settings$NEWLINE$/usr/local/opt/game-porting-toolkit/bin/wine64
+  Set Variable PROGRESSTEXT to Configuring Windows Settings$NEWLINE$$WHICH$
   Set Variable PROGRESS to 100
-  Run Program /usr/local/opt/game-porting-toolkit/bin/wine64 winecfg (WAIT, get result into variable WINECFG)
+  Run Program $WHICH$ winecfg (WAIT, get result into variable WINECFG)
   if Variable ABORT Equals TRUE
     Terminate Installation
   end
@@ -354,7 +362,7 @@ if Variable EXEPATH not Equals
   if Variable ESYNC Equals TRUE
     Set Variable ENVIRONMENT to $ENVIRONMENT$ WINEESYNC=1
   end
-  Set Variable ENV_COMMAND to /usr/local/opt/game-porting-toolkit/bin/wine64
+  Set Variable ENV_COMMAND to $WHICH$
   Set Variable ENV_PARAMS to $EXEPATH$
   Comment: Fix for this potential error: "Server is running with WINEESYNC but this process is not, please enable WINEESYNC or restart wineserver."
   Run Program /usr/bin/killall wineserver (WAIT)
